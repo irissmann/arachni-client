@@ -4,16 +4,20 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 
 import de.irissmann.arachni.api.ArachniApiException;
+import de.irissmann.arachni.api.scans.Scan;
 
 public class ArachniRestClient {
 	private final HttpClient httpClient;
@@ -42,5 +46,19 @@ public class ArachniRestClient {
 	    } catch (IOException exception) {
 	        throw new ArachniApiException("Could not connect to server.", exception);
 	    }
+	}
+	
+	public String put(String path, String body) throws ArachniApiException {
+        try {
+        HttpPut putRequest = new HttpPut(new URL(baseUrl, path).toString());
+        HttpEntity entity = new StringEntity(body);
+        putRequest.setEntity(entity);
+        HttpResponse response = httpClient.execute(putRequest);
+        return EntityUtils.toString(response.getEntity());
+        } catch (MalformedURLException exception) {
+            throw new ArachniApiException("URL not valid.", exception);
+        } catch (IOException exception) {
+            throw new ArachniApiException("Could not connect to server.", exception);
+        }
 	}
 }
