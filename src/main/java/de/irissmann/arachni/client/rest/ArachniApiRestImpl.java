@@ -32,7 +32,7 @@ public class ArachniApiRestImpl implements ArachniApi {
     
     public String performScan(Scan scan) throws ArachniApiException {
         String body = gson.toJson(scan);
-        String json = restClient.put("/scans", body);
+        String json = restClient.post("/scans", body);
         Map<String, String> response = gson.fromJson(json, Map.class);
         return response.get("id");
     }

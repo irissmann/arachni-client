@@ -1,8 +1,9 @@
 package de.irissmann.arachni.client.rest;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.put;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.Assert.assertEquals;
@@ -40,26 +41,28 @@ public class ArachniApiRestTest extends AbstractRestTest {
         assertTrue("List should contains element 'b4854e94746112b059c710c502949ce2'",
                 scans.contains("b4854e94746112b059c710c502949ce2"));
     }
-    
+
     @Test
     public void testReturnValueWhenPerformNewScan() throws Exception {
-        stubFor(put(urlEqualTo("/scans")).willReturn(aResponse().withStatus(200)
-                .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())
-                .withBody(getJsonFromFile("performScan.json"))));
-        
+        stubFor(post(urlEqualTo("/scans"))
+                .withHeader(HttpHeaders.CONTENT_TYPE, containing(ContentType.APPLICATION_JSON.toString()))
+                .willReturn(aResponse().withStatus(200)
+                        .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())
+                        .withBody(getJsonFromFile("performScan.json"))));
+
         ArachniApi api = ArachniApiRestBuilder.create(new URL("http://127.0.0.1:8089")).build();
-        
+
         Scan scan = new Scan("http://ellen:8080");
         String id = api.performScan(scan);
         assertEquals("919813cdb162af0c091c34fca3823b89", id);
     }
-    
+
     @Test
     public void serverNotAvailableException() throws Exception {
         ArachniApi api = ArachniApiRestBuilder.create(new URL("http://127.0.0.1:8873")).build();
         try {
             api.getScans();
-        } catch(ArachniApiException exception) {
+        } catch (ArachniApiException exception) {
             assertEquals("Could not connect to server.", exception.getMessage());
         }
     }
