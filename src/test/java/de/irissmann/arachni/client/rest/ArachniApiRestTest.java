@@ -6,8 +6,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.net.URL;
 import java.util.List;
@@ -56,12 +59,32 @@ public class ArachniApiRestTest extends AbstractRestTest {
         String id = api.performScan(scan);
         assertEquals("919813cdb162af0c091c34fca3823b89", id);
     }
+    
+    @Test
+    public void testServerErrorWhenPerformNewScan() throws Exception {
+        stubFor(post(urlEqualTo("/scans"))
+                .withHeader(HttpHeaders.CONTENT_TYPE, containing(ContentType.APPLICATION_JSON.toString()))
+                .willReturn(aResponse().withStatus(500)
+                        .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())
+                        .withBody(getJsonFromFile("performScanError.json"))));
+
+        ArachniApi api = ArachniApiRestBuilder.create(new URL("http://127.0.0.1:8089")).build();
+
+        Scan scan = new Scan("http://ellen:8080");
+        try {
+            api.performScan(scan);
+            fail();
+        } catch (ArachniApiException exception) {
+            assertThat(exception.getMessage(), containsString("RemoteException"));
+        }
+    }
 
     @Test
     public void serverNotAvailableException() throws Exception {
         ArachniApi api = ArachniApiRestBuilder.create(new URL("http://127.0.0.1:8873")).build();
         try {
             api.getScans();
+            fail();
         } catch (ArachniApiException exception) {
             assertEquals("Could not connect to server.", exception.getMessage());
         }
