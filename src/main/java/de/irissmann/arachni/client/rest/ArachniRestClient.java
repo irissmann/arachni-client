@@ -17,55 +17,61 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.irissmann.arachni.api.ArachniApiException;
 
 public class ArachniRestClient {
-	private final HttpClient httpClient;
-	
-	private final URL baseUrl;
-	
-	public ArachniRestClient(URL baseUrl) {
-		this.baseUrl = baseUrl;
-		httpClient = HttpClientBuilder.create().build();
-	}
-	
-	public ArachniRestClient(URL baseUrl, UsernamePasswordCredentials credentials) {
-	    this.baseUrl = baseUrl;
+
+    public static final Logger log = LoggerFactory.getLogger(ArachniRestClient.class);
+
+    private final HttpClient httpClient;
+
+    private final URL baseUrl;
+
+    public ArachniRestClient(URL baseUrl) {
+        this.baseUrl = baseUrl;
+        httpClient = HttpClientBuilder.create().build();
+    }
+
+    public ArachniRestClient(URL baseUrl, UsernamePasswordCredentials credentials) {
+        this.baseUrl = baseUrl;
         BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(AuthScope.ANY, credentials);
         httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(credentialsProvider).build();
-	}
-	
-	public String get(String path) throws ArachniApiException {
-	    try {
-		HttpGet getRequest = new HttpGet(new URL(baseUrl, path).toString());
-		HttpResponse response = httpClient.execute(getRequest);
-		return EntityUtils.toString(response.getEntity());
-	    } catch (MalformedURLException exception) {
-	        throw new ArachniApiException("URL not valid.", exception);
-	    } catch (IOException exception) {
-	        throw new ArachniApiException("Could not connect to server.", exception);
-	    }
-	}
-	
-	public String post(String path, String body) throws ArachniApiException {
+    }
+
+    public String get(String path) throws ArachniApiException {
         try {
-        HttpPost postRequest = new HttpPost(new URL(baseUrl, path).toString());
-        HttpEntity entity = new StringEntity(body);
-        postRequest.setEntity(entity);
-        postRequest.setHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
-        postRequest.setHeader(HttpHeaders.ACCEPT, ContentType.APPLICATION_JSON.toString());
-        HttpResponse response = httpClient.execute(postRequest);
-        if (response.getStatusLine().getStatusCode() == 500) {
-            String message = EntityUtils.toString(response.getEntity());
-            throw new ArachniApiException(message);
-        }
-        return EntityUtils.toString(response.getEntity());
+            HttpGet getRequest = new HttpGet(new URL(baseUrl, path).toString());
+            HttpResponse response = httpClient.execute(getRequest);
+            return EntityUtils.toString(response.getEntity());
         } catch (MalformedURLException exception) {
             throw new ArachniApiException("URL not valid.", exception);
         } catch (IOException exception) {
             throw new ArachniApiException("Could not connect to server.", exception);
         }
-	}
+    }
+
+    public String post(String path, String body) throws ArachniApiException {
+        log.debug("POST request to path {} with json: {}", path, body);
+        try {
+            HttpPost postRequest = new HttpPost(new URL(baseUrl, path).toString());
+            HttpEntity entity = new StringEntity(body);
+            postRequest.setEntity(entity);
+            postRequest.setHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
+            postRequest.setHeader(HttpHeaders.ACCEPT, ContentType.APPLICATION_JSON.toString());
+            HttpResponse response = httpClient.execute(postRequest);
+            if (response.getStatusLine().getStatusCode() == 500) {
+                String message = EntityUtils.toString(response.getEntity());
+                throw new ArachniApiException(message);
+            }
+            return EntityUtils.toString(response.getEntity());
+        } catch (MalformedURLException exception) {
+            throw new ArachniApiException("URL not valid.", exception);
+        } catch (IOException exception) {
+            throw new ArachniApiException("Could not connect to server.", exception);
+        }
+    }
 }

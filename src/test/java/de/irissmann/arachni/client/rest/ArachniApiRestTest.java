@@ -24,6 +24,7 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 import de.irissmann.arachni.api.ArachniApi;
 import de.irissmann.arachni.api.ArachniApiException;
+import de.irissmann.arachni.api.scans.Http;
 import de.irissmann.arachni.api.scans.Scan;
 
 public class ArachniApiRestTest extends AbstractRestTest {
@@ -56,6 +57,8 @@ public class ArachniApiRestTest extends AbstractRestTest {
         ArachniApi api = ArachniApiRestBuilder.create(new URL("http://127.0.0.1:8089")).build();
 
         Scan scan = new Scan("http://ellen:8080");
+        Http http = new Http();
+        scan.setHttp(http);
         String id = api.performScan(scan);
         assertEquals("919813cdb162af0c091c34fca3823b89", id);
     }
