@@ -21,5 +21,4 @@ public class Scan {
     public String getUrl() {
         return url;
     }
-
 }

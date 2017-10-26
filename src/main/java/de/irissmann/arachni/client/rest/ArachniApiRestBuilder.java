@@ -25,7 +25,7 @@ public class ArachniApiRestBuilder {
         return this;
     }
     
-    public ArachniApi build() {
+    public final ArachniApi build() {
         ArachniApiRestImpl restApi = new ArachniApiRestImpl();
         if (credentials != null) {
             restApi.setRestClient(new ArachniRestClient(arachniRestUrl, credentials));

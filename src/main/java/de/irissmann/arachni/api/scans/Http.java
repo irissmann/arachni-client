@@ -1,11 +1,8 @@
 package de.irissmann.arachni.api.scans;
 
-import java.util.List;
-import java.util.Map;
-
 public class Http {
     
-    private String userAgent = "ArachniRestClient";
+    private final String userAgent = "ArachniRestClient";
     
     private Integer requestTimeout;
     
@@ -15,12 +12,8 @@ public class Http {
     
     private Integer requestQueueSize;
     
-    private Map<String, String> requestHeaders;
-    
     private Integer responseMaxSize;
     
-    private Map<String, String> cookies;
-
     public Http() {
         super();
     }
@@ -29,64 +22,48 @@ public class Http {
         return userAgent;
     }
 
-    public void setUserAgent(String userAgent) {
-        this.userAgent = userAgent;
-    }
-
     public int getRequestTimeout() {
         return requestTimeout;
     }
 
-    public void setRequestTimeout(int requestTimeout) {
+    public Http setRequestTimeout(int requestTimeout) {
         this.requestTimeout = requestTimeout;
+        return this;
     }
 
     public int getRequestRedirectLimit() {
         return requestRedirectLimit;
     }
 
-    public void setRequestRedirectLimit(int requestRedirectLimit) {
+    public Http setRequestRedirectLimit(int requestRedirectLimit) {
         this.requestRedirectLimit = requestRedirectLimit;
+        return this;
     }
 
     public int getRequestConcurrency() {
         return requestConcurrency;
     }
 
-    public void setRequestConcurrency(int requestConcurrency) {
+    public Http setRequestConcurrency(int requestConcurrency) {
         this.requestConcurrency = requestConcurrency;
+        return this;
     }
 
     public int getRequestQueueSize() {
         return requestQueueSize;
     }
 
-    public void setRequestQueueSize(int requestQueueSize) {
+    public Http setRequestQueueSize(int requestQueueSize) {
         this.requestQueueSize = requestQueueSize;
-    }
-
-    public Map<String, String> getRequestHeaders() {
-        return requestHeaders;
-    }
-
-    public void setRequestHeaders(Map<String, String> requestHeaders) {
-        this.requestHeaders = requestHeaders;
+        return this;
     }
 
     public int getResponseMaxSize() {
         return responseMaxSize;
     }
 
-    public void setResponseMaxSize(int responseMaxSize) {
+    public Http setResponseMaxSize(int responseMaxSize) {
         this.responseMaxSize = responseMaxSize;
+        return this;
     }
-
-    public Map<String, String> getCookies() {
-        return cookies;
-    }
-
-    public void setCookies(Map<String, String> cookies) {
-        this.cookies = cookies;
-    }
-
 }

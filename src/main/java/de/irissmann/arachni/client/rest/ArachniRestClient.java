@@ -63,7 +63,7 @@ public class ArachniRestClient {
             postRequest.setHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
             postRequest.setHeader(HttpHeaders.ACCEPT, ContentType.APPLICATION_JSON.toString());
             HttpResponse response = httpClient.execute(postRequest);
-            if (response.getStatusLine().getStatusCode() == 500) {
+            if (response.getStatusLine().getStatusCode() != 200) {
                 String message = EntityUtils.toString(response.getEntity());
                 throw new ArachniApiException(message);
             }
