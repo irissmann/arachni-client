@@ -1,5 +1,6 @@
 package de.irissmann.arachni.api.scans;
 
+@SuppressWarnings("unused")
 public class Scan {
 
     private final String url;
@@ -10,15 +11,7 @@ public class Scan {
         this.url = url;
     }
 
-    public Http getHttp() {
-        return http;
-    }
-
     public void setHttp(Http http) {
         this.http = http;
-    }
-
-    public String getUrl() {
-        return url;
     }
 }
