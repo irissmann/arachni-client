@@ -1,4 +1,4 @@
-package de.irissmann.arachni.api.scans;
+package de.irissmann.arachni.client.rest.request;
 
 @SuppressWarnings("unused")
 public class Http {

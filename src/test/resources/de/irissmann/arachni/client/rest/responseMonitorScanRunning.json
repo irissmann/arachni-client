@@ -1,0 +1,34 @@
+{
+  "status": "scanning",
+  "busy": true,
+  "seed": "c0c039750bef4f5688da4fba929b06ac",
+  "statistics": {
+    "http": {
+      "request_count": 1312,
+      "response_count": 1208,
+      "time_out_count": 0,
+      "total_responses_per_second": 145.55173283136,
+      "burst_response_time_sum": 0,
+      "burst_response_count": 0,
+      "burst_responses_per_second": 0,
+      "burst_average_response_time": 0,
+      "total_average_response_time": 0.12118887582781,
+      "max_concurrency": 20,
+      "original_max_concurrency": 20
+    },
+    "browser_cluster": {
+      "seconds_per_job": 1.6666666666667,
+      "total_job_time": 25,
+      "queued_job_count": 31,
+      "completed_job_count": 15
+    },
+    "runtime": 9.251885252,
+    "found_pages": 10,
+    "audited_pages": 2,
+    "current_page": "http:\/\/testhtml5.vulnweb.com\/ajax\/popular?offset=0"
+  },
+  "errors": [],
+  "messages": [],
+  "issues": [],
+  "sitemap": {}
+}

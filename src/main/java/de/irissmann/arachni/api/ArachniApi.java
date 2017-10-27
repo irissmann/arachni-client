@@ -2,7 +2,7 @@ package de.irissmann.arachni.api;
 
 import java.util.List;
 
-import de.irissmann.arachni.api.scans.Scan;
+import de.irissmann.arachni.client.rest.request.Scan;
 
 public interface ArachniApi {
 	

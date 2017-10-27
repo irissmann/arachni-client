@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 
 import de.irissmann.arachni.api.ArachniApi;
 import de.irissmann.arachni.api.ArachniApiException;
-import de.irissmann.arachni.api.scans.Scan;
+import de.irissmann.arachni.client.rest.request.Scan;
 
 public class ArachniApiRestImpl implements ArachniApi {
 

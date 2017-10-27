@@ -27,8 +27,8 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 import de.irissmann.arachni.api.ArachniApi;
 import de.irissmann.arachni.api.ArachniApiException;
-import de.irissmann.arachni.api.scans.Http;
-import de.irissmann.arachni.api.scans.Scan;
+import de.irissmann.arachni.client.rest.request.Http;
+import de.irissmann.arachni.client.rest.request.Scan;
 
 public class ArachniApiRestTest extends AbstractRestTest {
 
