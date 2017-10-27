@@ -7,9 +7,11 @@ import java.net.URL;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
@@ -63,7 +65,7 @@ public class ArachniRestClient {
             postRequest.setHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
             postRequest.setHeader(HttpHeaders.ACCEPT, ContentType.APPLICATION_JSON.toString());
             HttpResponse response = httpClient.execute(postRequest);
-            if (response.getStatusLine().getStatusCode() != 200) {
+            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
                 String message = EntityUtils.toString(response.getEntity());
                 throw new ArachniApiException(message);
             }
@@ -74,4 +76,22 @@ public class ArachniRestClient {
             throw new ArachniApiException("Could not connect to server.", exception);
         }
     }
+    
+    public boolean delete(String path) throws ArachniApiException {
+        try {
+            HttpDelete deleteRequest = new HttpDelete(new URL(baseUrl, path).toString());
+            HttpResponse response = httpClient.execute(deleteRequest);
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                return true;
+            } else {
+                String message = EntityUtils.toString(response.getEntity());
+                throw new ArachniApiException(message);
+            }
+        } catch (MalformedURLException exception) {
+            throw new ArachniApiException("URL not valid.", exception);
+        } catch (IOException exception) {
+            throw new ArachniApiException("Could not connect to server.", exception);
+        }
+    }
+
 }

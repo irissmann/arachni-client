@@ -5,6 +5,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
@@ -21,6 +22,7 @@ import java.net.URL;
 import java.util.List;
 
 import org.apache.http.HttpHeaders;
+import org.apache.http.HttpStatus;
 import org.apache.http.entity.ContentType;
 import org.junit.Rule;
 import org.junit.Test;
@@ -140,6 +142,35 @@ public class ArachniApiRestTest extends AbstractRestTest {
         assertEquals("done", scan.getStatus());
         assertEquals("a052742a96b89f8c2ee83928a8d893cd", scan.getSeed());
         assertThat(scan.getErrors().size(), greaterThan(10));
+    }
+
+    @Test
+    public void testDeleteScan() throws Exception {
+        stubFor(delete(urlEqualTo("/scans/45c8348ef439885b819ab51cb78aa334")).willReturn(aResponse()
+                .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())
+                .withStatus(200)));
+
+        ArachniApi api = ArachniApiRestBuilder.create(new URL("http://127.0.0.1:8089")).build();
+
+        assertTrue(api.shutdownScan("45c8348ef439885b819ab51cb78aa334"));
+    }
+    
+
+    @Test
+    public void testDeleteScanNotFound() throws Exception {
+        stubFor(delete(urlEqualTo("/scans/45c8348ef439885b819ab51cb78aa334")).willReturn(aResponse()
+                .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())
+                .withStatus(HttpStatus.SC_NOT_FOUND)
+                .withBody(getTextFromFile("responseDeleteScanNotFound.txt"))));
+
+        ArachniApi api = ArachniApiRestBuilder.create(new URL("http://127.0.0.1:8089")).build();
+        
+        try {
+            assertTrue(api.shutdownScan("45c8348ef439885b819ab51cb78aa334"));
+            fail();
+        } catch (ArachniApiException exception) {
+            assertEquals("Scan not found for token: 45c8348ef439885b819ab51cb78aa334.", exception.getMessage());
+        }
     }
 
     @Test

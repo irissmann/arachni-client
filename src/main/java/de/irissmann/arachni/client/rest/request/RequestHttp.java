@@ -19,10 +19,6 @@ public class RequestHttp {
         super();
     }
     
-    public String getUserAgent() {
-        return userAgent;
-    }
-
     public RequestHttp setRequestTimeout(int requestTimeout) {
         this.requestTimeout = requestTimeout;
         return this;

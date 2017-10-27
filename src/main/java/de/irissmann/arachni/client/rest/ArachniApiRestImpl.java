@@ -44,6 +44,10 @@ public class ArachniApiRestImpl implements ArachniApi {
         return scan;
     }
     
+    public boolean shutdownScan(String id) throws ArachniApiException {
+        return restClient.delete(String.join("/", "/scans", id));
+    }
+    
     protected void setRestClient(ArachniRestClient restClient) {
         this.restClient = restClient;
     }
