@@ -1,17 +1,17 @@
 package de.irissmann.arachni.client.rest.request;
 
 @SuppressWarnings("unused")
-public class Scan {
+public class RequestScan {
 
     private final String url;
     
-    private Http http;
+    private RequestHttp http;
     
-    public Scan(String url) {
+    public RequestScan(String url) {
         this.url = url;
     }
 
-    public void setHttp(Http http) {
+    public void setHttp(RequestHttp http) {
         this.http = http;
     }
 }

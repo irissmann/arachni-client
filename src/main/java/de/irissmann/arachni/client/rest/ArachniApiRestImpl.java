@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 
 import de.irissmann.arachni.api.ArachniApi;
 import de.irissmann.arachni.api.ArachniApiException;
-import de.irissmann.arachni.client.rest.request.Scan;
+import de.irissmann.arachni.client.rest.request.RequestScan;
 
 public class ArachniApiRestImpl implements ArachniApi {
 
@@ -30,7 +30,7 @@ public class ArachniApiRestImpl implements ArachniApi {
         return new ArrayList<String>(scans.keySet());
     }
     
-    public String performScan(Scan scan) throws ArachniApiException {
+    public String performScan(RequestScan scan) throws ArachniApiException {
         String body = gson.toJson(scan);
         String json = restClient.post("/scans", body);
         Map<String, String> response = gson.fromJson(json, Map.class);

@@ -27,8 +27,8 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 import de.irissmann.arachni.api.ArachniApi;
 import de.irissmann.arachni.api.ArachniApiException;
-import de.irissmann.arachni.client.rest.request.Http;
-import de.irissmann.arachni.client.rest.request.Scan;
+import de.irissmann.arachni.client.rest.request.RequestHttp;
+import de.irissmann.arachni.client.rest.request.RequestScan;
 
 public class ArachniApiRestTest extends AbstractRestTest {
 
@@ -59,8 +59,8 @@ public class ArachniApiRestTest extends AbstractRestTest {
 
         ArachniApi api = ArachniApiRestBuilder.create(new URL("http://127.0.0.1:8089")).build();
 
-        Scan scan = new Scan("http://ellen:8080");
-        Http http = new Http();
+        RequestScan scan = new RequestScan("http://ellen:8080");
+        RequestHttp http = new RequestHttp();
         scan.setHttp(http);
         String id = api.performScan(scan);
         assertEquals("919813cdb162af0c091c34fca3823b89", id);
@@ -77,7 +77,7 @@ public class ArachniApiRestTest extends AbstractRestTest {
 
         ArachniApi api = ArachniApiRestBuilder.create(new URL("http://127.0.0.1:8089")).build();
 
-        Scan scan = new Scan("http://ellen:8080");
+        RequestScan scan = new RequestScan("http://ellen:8080");
         try {
             api.performScan(scan);
             fail();
@@ -96,8 +96,8 @@ public class ArachniApiRestTest extends AbstractRestTest {
 
         ArachniApi api = ArachniApiRestBuilder.create(new URL("http://127.0.0.1:8089")).build();
 
-        Scan scan = new Scan("http://ellen:8080");
-        Http http = new Http().setRequestConcurrency(33)
+        RequestScan scan = new RequestScan("http://ellen:8080");
+        RequestHttp http = new RequestHttp().setRequestConcurrency(33)
                 .setRequestQueueSize(42)
                 .setRequestRedirectLimit(2)
                 .setRequestTimeout(5000)
@@ -105,6 +105,18 @@ public class ArachniApiRestTest extends AbstractRestTest {
         scan.setHttp(http);
         api.performScan(scan);
         verify(postRequestedFor(urlEqualTo("/scans")).withRequestBody(equalToJson(getJsonFromFile("requestScanHttp.json"), true, true)));
+    }
+    
+    @Test
+    public void testMonitorScanRunning() throws Exception {
+        stubFor(get(urlEqualTo("/scans/123456"))
+                .withHeader(HttpHeaders.CONTENT_TYPE, containing(ContentType.APPLICATION_JSON.toString()))
+                .willReturn(aResponse().withStatus(200)
+                        .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())
+                        .withBody(getJsonFromFile("responseMonitorScanRunning.json"))));
+
+        ArachniApi api = ArachniApiRestBuilder.create(new URL("http://127.0.0.1:8089")).build();
+        
     }
 
     @Test

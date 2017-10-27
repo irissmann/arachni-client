@@ -1,7 +1,7 @@
 package de.irissmann.arachni.client.rest.request;
 
 @SuppressWarnings("unused")
-public class Http {
+public class RequestHttp {
     
     private final String userAgent = "ArachniRestClient";
     
@@ -15,7 +15,7 @@ public class Http {
     
     private Integer responseMaxSize;
     
-    public Http() {
+    public RequestHttp() {
         super();
     }
     
@@ -23,27 +23,27 @@ public class Http {
         return userAgent;
     }
 
-    public Http setRequestTimeout(int requestTimeout) {
+    public RequestHttp setRequestTimeout(int requestTimeout) {
         this.requestTimeout = requestTimeout;
         return this;
     }
 
-    public Http setRequestRedirectLimit(int requestRedirectLimit) {
+    public RequestHttp setRequestRedirectLimit(int requestRedirectLimit) {
         this.requestRedirectLimit = requestRedirectLimit;
         return this;
     }
 
-    public Http setRequestConcurrency(int requestConcurrency) {
+    public RequestHttp setRequestConcurrency(int requestConcurrency) {
         this.requestConcurrency = requestConcurrency;
         return this;
     }
 
-    public Http setRequestQueueSize(int requestQueueSize) {
+    public RequestHttp setRequestQueueSize(int requestQueueSize) {
         this.requestQueueSize = requestQueueSize;
         return this;
     }
 
-    public Http setResponseMaxSize(int responseMaxSize) {
+    public RequestHttp setResponseMaxSize(int responseMaxSize) {
         this.responseMaxSize = responseMaxSize;
         return this;
     }
