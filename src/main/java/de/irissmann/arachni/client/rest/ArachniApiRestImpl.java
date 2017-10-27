@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import de.irissmann.arachni.api.ArachniApi;
 import de.irissmann.arachni.api.ArachniApiException;
 import de.irissmann.arachni.client.rest.request.RequestScan;
+import de.irissmann.arachni.client.rest.response.ResponseScan;
 
 public class ArachniApiRestImpl implements ArachniApi {
 
@@ -37,6 +38,12 @@ public class ArachniApiRestImpl implements ArachniApi {
         return response.get("id");
     }
 
+    public ResponseScan monitorScan(String id) throws ArachniApiException {
+        String json = restClient.get(String.join("/", "/scans", id));
+        ResponseScan scan = gson.fromJson(json, ResponseScan.class);
+        return scan;
+    }
+    
     protected void setRestClient(ArachniRestClient restClient) {
         this.restClient = restClient;
     }

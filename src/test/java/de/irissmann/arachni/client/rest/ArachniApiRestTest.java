@@ -10,7 +10,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -29,6 +31,7 @@ import de.irissmann.arachni.api.ArachniApi;
 import de.irissmann.arachni.api.ArachniApiException;
 import de.irissmann.arachni.client.rest.request.RequestHttp;
 import de.irissmann.arachni.client.rest.request.RequestScan;
+import de.irissmann.arachni.client.rest.response.ResponseScan;
 
 public class ArachniApiRestTest extends AbstractRestTest {
 
@@ -109,14 +112,34 @@ public class ArachniApiRestTest extends AbstractRestTest {
     
     @Test
     public void testMonitorScanRunning() throws Exception {
-        stubFor(get(urlEqualTo("/scans/123456"))
-                .withHeader(HttpHeaders.CONTENT_TYPE, containing(ContentType.APPLICATION_JSON.toString()))
-                .willReturn(aResponse().withStatus(200)
-                        .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())
-                        .withBody(getJsonFromFile("responseMonitorScanRunning.json"))));
+        stubFor(get(urlEqualTo("/scans/123456")).willReturn(aResponse().withStatus(200)
+                .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())
+                .withBody(getJsonFromFile("responseMonitorScanRunning.json"))));
 
         ArachniApi api = ArachniApiRestBuilder.create(new URL("http://127.0.0.1:8089")).build();
         
+        ResponseScan scan = api.monitorScan("123456");
+        
+        assertTrue(scan.isBusy());
+        assertEquals("scanning", scan.getStatus());
+        assertEquals("c0c039750bef4f5688da4fba929b06ac", scan.getSeed());
+        
+    }
+
+    @Test
+    public void testMonitorScanDoneWithErrors() throws Exception {
+        stubFor(get(urlEqualTo("/scans/123456")).willReturn(aResponse().withStatus(200)
+                .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())
+                .withBody(getJsonFromFile("responseMonitorScanDoneError.json"))));
+
+        ArachniApi api = ArachniApiRestBuilder.create(new URL("http://127.0.0.1:8089")).build();
+        
+        ResponseScan scan = api.monitorScan("123456");
+        
+        assertFalse(scan.isBusy());
+        assertEquals("done", scan.getStatus());
+        assertEquals("a052742a96b89f8c2ee83928a8d893cd", scan.getSeed());
+        assertThat(scan.getErrors().size(), greaterThan(10));
     }
 
     @Test
