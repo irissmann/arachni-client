@@ -125,7 +125,8 @@ public class ArachniApiRestTest extends AbstractRestTest {
         assertTrue(scan.isBusy());
         assertEquals("scanning", scan.getStatus());
         assertEquals("c0c039750bef4f5688da4fba929b06ac", scan.getSeed());
-        
+        assertEquals(10, scan.getStatistics().getFoundPages());
+        assertEquals(2, scan.getStatistics().getAuditedPages());
     }
 
     @Test

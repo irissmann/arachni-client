@@ -1,6 +1,5 @@
 package de.irissmann.arachni.client.rest.response;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 public class ResponseScan {
@@ -11,7 +10,9 @@ public class ResponseScan {
     
     private String seed;
     
-    private List errors;
+    private List<String> errors;
+    
+    private Statistics statistics;
     
     public boolean isBusy() {
         return busy;
@@ -27,5 +28,9 @@ public class ResponseScan {
     
     public List<?> getErrors() {
         return errors;
+    }
+    
+    public Statistics getStatistics() {
+        return statistics;
     }
 }
