@@ -23,4 +23,11 @@ public abstract class AbstractRestTest {
         
         return Files.toString(file, Charsets.UTF_8);
     }
+    
+    public byte[] getByteArrayFromFile(String filename) throws Exception {
+        URL url = this.getClass().getResource(filename);
+        File file = new File(url.toURI());
+        
+        return Files.toByteArray(file);
+    }
 }

@@ -1,6 +1,7 @@
 package de.irissmann.arachni.client.rest;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -49,6 +50,18 @@ public class ArachniRestClient {
             HttpGet getRequest = new HttpGet(new URL(baseUrl, path).toString());
             HttpResponse response = httpClient.execute(getRequest);
             return EntityUtils.toString(response.getEntity());
+        } catch (MalformedURLException exception) {
+            throw new ArachniApiException("URL not valid.", exception);
+        } catch (IOException exception) {
+            throw new ArachniApiException("Could not connect to server.", exception);
+        }
+    }
+
+    public void getBinaryContent(String path, OutputStream outstream) throws ArachniApiException {
+        try {
+            HttpGet getRequest = new HttpGet(new URL(baseUrl, path).toString());
+            HttpResponse response = httpClient.execute(getRequest);
+            response.getEntity().writeTo(outstream);
         } catch (MalformedURLException exception) {
             throw new ArachniApiException("URL not valid.", exception);
         } catch (IOException exception) {

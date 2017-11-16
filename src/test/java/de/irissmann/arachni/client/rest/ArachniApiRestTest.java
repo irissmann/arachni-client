@@ -19,6 +19,8 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.List;
 
@@ -186,6 +188,20 @@ public class ArachniApiRestTest extends AbstractRestTest {
         String report = api.getScanReportJson("30dd87231d9022e97fca7f34b66ece43");
         
         JSONAssert.assertEquals("{\"version\": \"1.5.1\"}", report, false);
+    }
+
+    @Test
+    public void testGetReportHtml() throws Exception {
+        stubFor(get(urlEqualTo("/scans/30dd87231d9022e97fca7f34b66ece43/report.html.zip")).willReturn(aResponse().withStatus(200)
+                .withHeader(HttpHeaders.CONTENT_TYPE, "application/zip")
+                .withBody(getByteArrayFromFile("responseReport.html.zip"))));
+
+        ArachniApi api = ArachniApiRestBuilder.create(new URL("http://127.0.0.1:8089")).build();
+        
+        ByteArrayOutputStream outstream = new ByteArrayOutputStream();
+        api.getScanReportHtml("30dd87231d9022e97fca7f34b66ece43", outstream);
+        
+        assertEquals(2852, outstream.size());
     }
 
     @Test

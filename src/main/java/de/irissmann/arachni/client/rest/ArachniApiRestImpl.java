@@ -1,5 +1,6 @@
 package de.irissmann.arachni.client.rest;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,10 @@ public class ArachniApiRestImpl implements ArachniApi {
     
     public String getScanReportJson(String id) throws ArachniApiException {
         return restClient.get(String.join("/", "scans", id, "report.json"));
+    }
+    
+    public void getScanReportHtml(String id, OutputStream outstream) throws ArachniApiException {
+        restClient.getBinaryContent(String.join("/", "scans", id, "report.html.zip"), outstream);
     }
 
     protected void setRestClient(ArachniRestClient restClient) {

@@ -1,5 +1,6 @@
 package de.irissmann.arachni.api;
 
+import java.io.OutputStream;
 import java.util.List;
 
 import de.irissmann.arachni.client.rest.request.RequestScan;
@@ -16,4 +17,6 @@ public interface ArachniApi {
 	public boolean shutdownScan(String id) throws ArachniApiException;
 	
 	public String getScanReportJson(String id) throws ArachniApiException;
+	
+	public void getScanReportHtml(String id, OutputStream outstream) throws ArachniApiException;
 }
