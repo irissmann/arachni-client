@@ -14,4 +14,6 @@ public interface ArachniApi {
 	public ResponseScan monitorScan(String id) throws ArachniApiException;
 	
 	public boolean shutdownScan(String id) throws ArachniApiException;
+	
+	public String getScanReportJson(String id) throws ArachniApiException;
 }

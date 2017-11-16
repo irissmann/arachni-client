@@ -14,6 +14,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -26,6 +27,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.entity.ContentType;
 import org.junit.Rule;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
@@ -156,7 +158,6 @@ public class ArachniApiRestTest extends AbstractRestTest {
         assertTrue(api.shutdownScan("45c8348ef439885b819ab51cb78aa334"));
     }
     
-
     @Test
     public void testDeleteScanNotFound() throws Exception {
         stubFor(delete(urlEqualTo("/scans/45c8348ef439885b819ab51cb78aa334")).willReturn(aResponse()
@@ -172,6 +173,19 @@ public class ArachniApiRestTest extends AbstractRestTest {
         } catch (ArachniApiException exception) {
             assertEquals("Scan not found for token: 45c8348ef439885b819ab51cb78aa334.", exception.getMessage());
         }
+    }
+
+    @Test
+    public void testGetReportJson() throws Exception {
+        stubFor(get(urlEqualTo("/scans/30dd87231d9022e97fca7f34b66ece43/report.json")).willReturn(aResponse().withStatus(200)
+                .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())
+                .withBody(getJsonFromFile("responseReport.json"))));
+
+        ArachniApi api = ArachniApiRestBuilder.create(new URL("http://127.0.0.1:8089")).build();
+        
+        String report = api.getScanReportJson("30dd87231d9022e97fca7f34b66ece43");
+        
+        JSONAssert.assertEquals("{\"version\": \"1.5.1\"}", report, false);
     }
 
     @Test
