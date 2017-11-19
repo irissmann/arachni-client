@@ -19,4 +19,6 @@ public interface ArachniApi {
 	public String getScanReportJson(String id) throws ArachniApiException;
 	
 	public void getScanReportHtml(String id, OutputStream outstream) throws ArachniApiException;
+	
+	public void close();
 }

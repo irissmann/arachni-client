@@ -11,13 +11,13 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public class ArachniRestClient {
 
     public static final Logger log = LoggerFactory.getLogger(ArachniRestClient.class);
 
-    private final HttpClient httpClient;
+    private final CloseableHttpClient httpClient;
 
     private final URL baseUrl;
 
@@ -46,29 +46,33 @@ public class ArachniRestClient {
     }
 
     public String get(String path) throws ArachniApiException {
+        HttpGet getRequest = new HttpGet(getUri(path));
         try {
-            HttpGet getRequest = new HttpGet(getUri(path));
             HttpResponse response = httpClient.execute(getRequest);
             return EntityUtils.toString(response.getEntity());
         } catch (IOException exception) {
             throw new ArachniApiException("Could not connect to server.", exception);
+        } finally {
+            getRequest.reset();
         }
     }
 
     public void getBinaryContent(String path, OutputStream outstream) throws ArachniApiException {
+        HttpGet getRequest = new HttpGet(getUri(path));
         try {
-            HttpGet getRequest = new HttpGet(getUri(path));
             HttpResponse response = httpClient.execute(getRequest);
             response.getEntity().writeTo(outstream);
         } catch (IOException exception) {
             throw new ArachniApiException("Could not connect to server.", exception);
+        } finally {
+            getRequest.reset();
         }
     }
 
     public String post(String path, String body) throws ArachniApiException {
         log.debug("POST request to path {} with json: {}", path, body);
+        HttpPost postRequest = new HttpPost(getUri(path));
         try {
-            HttpPost postRequest = new HttpPost(getUri(path));
             HttpEntity entity = new StringEntity(body);
             postRequest.setEntity(entity);
             postRequest.setHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
@@ -81,12 +85,14 @@ public class ArachniRestClient {
             return EntityUtils.toString(response.getEntity());
         } catch (IOException exception) {
             throw new ArachniApiException("Could not connect to server.", exception);
+        } finally {
+            postRequest.reset();
         }
     }
-    
+
     public boolean delete(String path) throws ArachniApiException {
+        HttpDelete deleteRequest = new HttpDelete(getUri(path));
         try {
-            HttpDelete deleteRequest = new HttpDelete(getUri(path));
             HttpResponse response = httpClient.execute(deleteRequest);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 return true;
@@ -96,14 +102,25 @@ public class ArachniRestClient {
             }
         } catch (IOException exception) {
             throw new ArachniApiException("Could not connect to server.", exception);
+        } finally {
+            deleteRequest.reset();
         }
     }
-    
+
     private URI getUri(String path) throws ArachniApiException {
         try {
             return new URL(baseUrl, path).toURI();
         } catch (Exception exception) {
             throw new ArachniApiException("URL not valid.", exception);
+        }
+    }
+
+    protected void close() {
+        log.info("Try to close http connection.");
+        try {
+            httpClient.close();
+        } catch (IOException exception) {
+            log.error(exception.getMessage(), exception);
         }
     }
 }

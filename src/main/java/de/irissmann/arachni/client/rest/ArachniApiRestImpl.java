@@ -58,6 +58,10 @@ public class ArachniApiRestImpl implements ArachniApi {
         restClient.getBinaryContent(String.join("/", PATH_SCANS, id, "report.html.zip"), outstream);
     }
 
+    public void close() {
+        restClient.close();
+    }
+    
     protected void setRestClient(ArachniRestClient restClient) {
         this.restClient = restClient;
     }
