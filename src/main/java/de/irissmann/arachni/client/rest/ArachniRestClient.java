@@ -2,7 +2,7 @@ package de.irissmann.arachni.client.rest;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 import org.apache.http.HttpEntity;
@@ -47,11 +47,9 @@ public class ArachniRestClient {
 
     public String get(String path) throws ArachniApiException {
         try {
-            HttpGet getRequest = new HttpGet(new URL(baseUrl, path).toString());
+            HttpGet getRequest = new HttpGet(getUri(path));
             HttpResponse response = httpClient.execute(getRequest);
             return EntityUtils.toString(response.getEntity());
-        } catch (MalformedURLException exception) {
-            throw new ArachniApiException("URL not valid.", exception);
         } catch (IOException exception) {
             throw new ArachniApiException("Could not connect to server.", exception);
         }
@@ -59,11 +57,9 @@ public class ArachniRestClient {
 
     public void getBinaryContent(String path, OutputStream outstream) throws ArachniApiException {
         try {
-            HttpGet getRequest = new HttpGet(new URL(baseUrl, path).toString());
+            HttpGet getRequest = new HttpGet(getUri(path));
             HttpResponse response = httpClient.execute(getRequest);
             response.getEntity().writeTo(outstream);
-        } catch (MalformedURLException exception) {
-            throw new ArachniApiException("URL not valid.", exception);
         } catch (IOException exception) {
             throw new ArachniApiException("Could not connect to server.", exception);
         }
@@ -72,7 +68,7 @@ public class ArachniRestClient {
     public String post(String path, String body) throws ArachniApiException {
         log.debug("POST request to path {} with json: {}", path, body);
         try {
-            HttpPost postRequest = new HttpPost(new URL(baseUrl, path).toString());
+            HttpPost postRequest = new HttpPost(getUri(path));
             HttpEntity entity = new StringEntity(body);
             postRequest.setEntity(entity);
             postRequest.setHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
@@ -83,8 +79,6 @@ public class ArachniRestClient {
                 throw new ArachniApiException(message);
             }
             return EntityUtils.toString(response.getEntity());
-        } catch (MalformedURLException exception) {
-            throw new ArachniApiException("URL not valid.", exception);
         } catch (IOException exception) {
             throw new ArachniApiException("Could not connect to server.", exception);
         }
@@ -92,7 +86,7 @@ public class ArachniRestClient {
     
     public boolean delete(String path) throws ArachniApiException {
         try {
-            HttpDelete deleteRequest = new HttpDelete(new URL(baseUrl, path).toString());
+            HttpDelete deleteRequest = new HttpDelete(getUri(path));
             HttpResponse response = httpClient.execute(deleteRequest);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 return true;
@@ -100,11 +94,16 @@ public class ArachniRestClient {
                 String message = EntityUtils.toString(response.getEntity());
                 throw new ArachniApiException(message);
             }
-        } catch (MalformedURLException exception) {
-            throw new ArachniApiException("URL not valid.", exception);
         } catch (IOException exception) {
             throw new ArachniApiException("Could not connect to server.", exception);
         }
     }
-
+    
+    private URI getUri(String path) throws ArachniApiException {
+        try {
+            return new URL(baseUrl, path).toURI();
+        } catch (Exception exception) {
+            throw new ArachniApiException("URL not valid.", exception);
+        }
+    }
 }
