@@ -6,21 +6,21 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 
 import de.irissmann.arachni.client.ArachniClient;
 
-public class ArachniApiRestBuilder {
+public class ArachniRestClientBuilder {
 
     private final URL arachniRestUrl;
     private UsernamePasswordCredentials credentials;
     
 
-    protected ArachniApiRestBuilder(URL arachniRestUrl) {
+    protected ArachniRestClientBuilder(URL arachniRestUrl) {
         this.arachniRestUrl = arachniRestUrl;
     }
 
-    public static ArachniApiRestBuilder create(URL arachniRestUrl) {
-        return new ArachniApiRestBuilder(arachniRestUrl);
+    public static ArachniRestClientBuilder create(URL arachniRestUrl) {
+        return new ArachniRestClientBuilder(arachniRestUrl);
     }
 
-    public final ArachniApiRestBuilder addCredentials(String username, String password) {
+    public final ArachniRestClientBuilder addCredentials(String username, String password) {
         this.credentials = new UsernamePasswordCredentials(username, password);
         return this;
     }
