@@ -1,14 +1,14 @@
 package de.irissmann.arachni.client;
 
-public class ArachniApiException extends Exception {
+public class ArachniClientException extends Exception {
 
     private static final long serialVersionUID = 2088423549757451992L;
 
-    public ArachniApiException(String message) {
+    public ArachniClientException(String message) {
         super(message);
     }
     
-    public ArachniApiException(String message, Exception exception) {
+    public ArachniClientException(String message, Exception exception) {
         super(message, exception);
     }
 }

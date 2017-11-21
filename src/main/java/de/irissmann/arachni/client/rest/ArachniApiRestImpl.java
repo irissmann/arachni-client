@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-import de.irissmann.arachni.client.ArachniApiException;
+import de.irissmann.arachni.client.ArachniClientException;
 import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.rest.request.RequestScan;
 import de.irissmann.arachni.client.rest.response.ResponseScan;
@@ -27,34 +27,34 @@ public class ArachniApiRestImpl implements ArachniClient {
         gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
     }
 
-    public List<String> getScans() throws ArachniApiException {
+    public List<String> getScans() throws ArachniClientException {
         String json;
         json = restClient.get(PATH_SCANS);
         Map<String, JsonObject> scans = gson.fromJson(json, Map.class);
         return new ArrayList<String>(scans.keySet());
     }
     
-    public String performScan(RequestScan scan) throws ArachniApiException {
+    public String performScan(RequestScan scan) throws ArachniClientException {
         String body = gson.toJson(scan);
         String json = restClient.post(PATH_SCANS, body);
         Map<String, String> response = gson.fromJson(json, Map.class);
         return response.get("id");
     }
 
-    public ResponseScan monitorScan(String id) throws ArachniApiException {
+    public ResponseScan monitorScan(String id) throws ArachniClientException {
         String json = restClient.get(String.join("/", PATH_SCANS, id));
         return gson.fromJson(json, ResponseScan.class);
     }
     
-    public boolean shutdownScan(String id) throws ArachniApiException {
+    public boolean shutdownScan(String id) throws ArachniClientException {
         return restClient.delete(String.join("/", PATH_SCANS, id));
     }
     
-    public String getScanReportJson(String id) throws ArachniApiException {
+    public String getScanReportJson(String id) throws ArachniClientException {
         return restClient.get(String.join("/", PATH_SCANS, id, "report.json"));
     }
     
-    public void getScanReportHtml(String id, OutputStream outstream) throws ArachniApiException {
+    public void getScanReportHtml(String id, OutputStream outstream) throws ArachniClientException {
         restClient.getBinaryContent(String.join("/", PATH_SCANS, id, "report.html.zip"), outstream);
     }
 

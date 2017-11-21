@@ -23,7 +23,7 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.irissmann.arachni.client.ArachniApiException;
+import de.irissmann.arachni.client.ArachniClientException;
 
 public class ArachniRestClient {
 
@@ -45,31 +45,31 @@ public class ArachniRestClient {
         httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(credentialsProvider).build();
     }
 
-    public String get(String path) throws ArachniApiException {
+    public String get(String path) throws ArachniClientException {
         HttpGet getRequest = new HttpGet(getUri(path));
         try {
             HttpResponse response = httpClient.execute(getRequest);
             return EntityUtils.toString(response.getEntity());
         } catch (IOException exception) {
-            throw new ArachniApiException("Could not connect to server.", exception);
+            throw new ArachniClientException("Could not connect to server.", exception);
         } finally {
             getRequest.reset();
         }
     }
 
-    public void getBinaryContent(String path, OutputStream outstream) throws ArachniApiException {
+    public void getBinaryContent(String path, OutputStream outstream) throws ArachniClientException {
         HttpGet getRequest = new HttpGet(getUri(path));
         try {
             HttpResponse response = httpClient.execute(getRequest);
             response.getEntity().writeTo(outstream);
         } catch (IOException exception) {
-            throw new ArachniApiException("Could not connect to server.", exception);
+            throw new ArachniClientException("Could not connect to server.", exception);
         } finally {
             getRequest.reset();
         }
     }
 
-    public String post(String path, String body) throws ArachniApiException {
+    public String post(String path, String body) throws ArachniClientException {
         log.debug("POST request to path {} with json: {}", path, body);
         HttpPost postRequest = new HttpPost(getUri(path));
         try {
@@ -80,17 +80,17 @@ public class ArachniRestClient {
             HttpResponse response = httpClient.execute(postRequest);
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
                 String message = EntityUtils.toString(response.getEntity());
-                throw new ArachniApiException(message);
+                throw new ArachniClientException(message);
             }
             return EntityUtils.toString(response.getEntity());
         } catch (IOException exception) {
-            throw new ArachniApiException("Could not connect to server.", exception);
+            throw new ArachniClientException("Could not connect to server.", exception);
         } finally {
             postRequest.reset();
         }
     }
 
-    public boolean delete(String path) throws ArachniApiException {
+    public boolean delete(String path) throws ArachniClientException {
         HttpDelete deleteRequest = new HttpDelete(getUri(path));
         try {
             HttpResponse response = httpClient.execute(deleteRequest);
@@ -98,20 +98,20 @@ public class ArachniRestClient {
                 return true;
             } else {
                 String message = EntityUtils.toString(response.getEntity());
-                throw new ArachniApiException(message);
+                throw new ArachniClientException(message);
             }
         } catch (IOException exception) {
-            throw new ArachniApiException("Could not connect to server.", exception);
+            throw new ArachniClientException("Could not connect to server.", exception);
         } finally {
             deleteRequest.reset();
         }
     }
 
-    private URI getUri(String path) throws ArachniApiException {
+    private URI getUri(String path) throws ArachniClientException {
         try {
             return new URL(baseUrl, path).toURI();
         } catch (Exception exception) {
-            throw new ArachniApiException("URL not valid.", exception);
+            throw new ArachniClientException("URL not valid.", exception);
         }
     }
 

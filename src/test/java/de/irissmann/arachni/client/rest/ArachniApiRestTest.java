@@ -31,7 +31,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
-import de.irissmann.arachni.client.ArachniApiException;
+import de.irissmann.arachni.client.ArachniClientException;
 import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.rest.request.RequestHttp;
 import de.irissmann.arachni.client.rest.request.RequestScan;
@@ -88,7 +88,7 @@ public class ArachniApiRestTest extends AbstractRestTest {
         try {
             api.performScan(scan);
             fail();
-        } catch (ArachniApiException exception) {
+        } catch (ArachniClientException exception) {
             assertThat(exception.getMessage(), containsString("RemoteException"));
         }
     }
@@ -170,7 +170,7 @@ public class ArachniApiRestTest extends AbstractRestTest {
         try {
             assertTrue(api.shutdownScan("45c8348ef439885b819ab51cb78aa334"));
             fail();
-        } catch (ArachniApiException exception) {
+        } catch (ArachniClientException exception) {
             assertEquals("Scan not found for token: 45c8348ef439885b819ab51cb78aa334.", exception.getMessage());
         }
     }
@@ -208,7 +208,7 @@ public class ArachniApiRestTest extends AbstractRestTest {
         try {
             api.getScans();
             fail();
-        } catch (ArachniApiException exception) {
+        } catch (ArachniClientException exception) {
             assertEquals("Could not connect to server.", exception.getMessage());
         }
     }
