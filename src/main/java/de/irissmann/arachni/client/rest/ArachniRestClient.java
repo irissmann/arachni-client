@@ -23,7 +23,7 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.irissmann.arachni.api.ArachniApiException;
+import de.irissmann.arachni.client.ArachniApiException;
 
 public class ArachniRestClient {
 

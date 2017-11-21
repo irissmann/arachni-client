@@ -4,7 +4,7 @@ import java.net.URL;
 
 import org.apache.http.auth.UsernamePasswordCredentials;
 
-import de.irissmann.arachni.api.ArachniClient;
+import de.irissmann.arachni.client.ArachniClient;
 
 public class ArachniApiRestBuilder {
 

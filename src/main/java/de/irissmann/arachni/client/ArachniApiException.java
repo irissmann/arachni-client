@@ -1,4 +1,4 @@
-package de.irissmann.arachni.api;
+package de.irissmann.arachni.client;
 
 public class ArachniApiException extends Exception {
 

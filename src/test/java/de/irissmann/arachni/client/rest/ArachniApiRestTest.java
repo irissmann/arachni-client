@@ -31,8 +31,8 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
-import de.irissmann.arachni.api.ArachniClient;
-import de.irissmann.arachni.api.ArachniApiException;
+import de.irissmann.arachni.client.ArachniApiException;
+import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.rest.request.RequestHttp;
 import de.irissmann.arachni.client.rest.request.RequestScan;
 import de.irissmann.arachni.client.rest.response.ResponseScan;

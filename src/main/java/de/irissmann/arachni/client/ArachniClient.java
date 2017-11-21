@@ -1,4 +1,4 @@
-package de.irissmann.arachni.api;
+package de.irissmann.arachni.client;
 
 import java.io.OutputStream;
 import java.util.List;
