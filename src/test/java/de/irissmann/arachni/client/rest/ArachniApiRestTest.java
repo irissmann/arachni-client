@@ -32,6 +32,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 import de.irissmann.arachni.client.ArachniClientException;
+import de.irissmann.arachni.client.Scan;
 import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.rest.request.RequestHttp;
 import de.irissmann.arachni.client.rest.request.RequestScan;
@@ -66,11 +67,11 @@ public class ArachniApiRestTest extends AbstractRestTest {
 
         ArachniClient api = ArachniRestClientBuilder.create(new URL("http://127.0.0.1:8089")).build();
 
-        RequestScan scan = new RequestScan("http://ellen:8080");
+        RequestScan scanRequest = new RequestScan("http://ellen:8080");
         RequestHttp http = new RequestHttp();
-        scan.setHttp(http);
-        String id = api.performScan(scan);
-        assertEquals("919813cdb162af0c091c34fca3823b89", id);
+        scanRequest.setHttp(http);
+        Scan scan = api.performScan(scanRequest);
+        assertEquals("919813cdb162af0c091c34fca3823b89", scan.getId());
         verify(postRequestedFor(urlEqualTo("/scans")).withRequestBody(equalToJson("{\"url\":\"http://ellen:8080\"}", true, true)));
     }
     
@@ -84,9 +85,9 @@ public class ArachniApiRestTest extends AbstractRestTest {
 
         ArachniClient api = ArachniRestClientBuilder.create(new URL("http://127.0.0.1:8089")).build();
 
-        RequestScan scan = new RequestScan("http://ellen:8080");
+        RequestScan scanRequest = new RequestScan("http://ellen:8080");
         try {
-            api.performScan(scan);
+            api.performScan(scanRequest);
             fail();
         } catch (ArachniClientException exception) {
             assertThat(exception.getMessage(), containsString("RemoteException"));
@@ -103,14 +104,14 @@ public class ArachniApiRestTest extends AbstractRestTest {
 
         ArachniClient api = ArachniRestClientBuilder.create(new URL("http://127.0.0.1:8089")).build();
 
-        RequestScan scan = new RequestScan("http://ellen:8080");
+        RequestScan scanRequest = new RequestScan("http://ellen:8080");
         RequestHttp http = new RequestHttp().setRequestConcurrency(33)
                 .setRequestQueueSize(42)
                 .setRequestRedirectLimit(2)
                 .setRequestTimeout(5000)
                 .setResponseMaxSize(333222);
-        scan.setHttp(http);
-        api.performScan(scan);
+        scanRequest.setHttp(http);
+        api.performScan(scanRequest);
         verify(postRequestedFor(urlEqualTo("/scans")).withRequestBody(equalToJson(getJsonFromFile("requestScanHttp.json"), true, true)));
     }
     
@@ -122,13 +123,15 @@ public class ArachniApiRestTest extends AbstractRestTest {
 
         ArachniClient api = ArachniRestClientBuilder.create(new URL("http://127.0.0.1:8089")).build();
         
-        ResponseScan scan = api.monitorScan("123456");
+        Scan scan = new ScanRestImpl("123456", (ArachniRestClient) api);
         
-        assertTrue(scan.isBusy());
-        assertEquals("scanning", scan.getStatus());
-        assertEquals("c0c039750bef4f5688da4fba929b06ac", scan.getSeed());
-        assertEquals(10, scan.getStatistics().getFoundPages());
-        assertEquals(2, scan.getStatistics().getAuditedPages());
+        ResponseScan response = scan.monitor();
+        
+        assertTrue(response.isBusy());
+        assertEquals("scanning", response.getStatus());
+        assertEquals("c0c039750bef4f5688da4fba929b06ac", response.getSeed());
+        assertEquals(10, response.getStatistics().getFoundPages());
+        assertEquals(2, response.getStatistics().getAuditedPages());
     }
 
     @Test
@@ -138,13 +141,14 @@ public class ArachniApiRestTest extends AbstractRestTest {
                 .withBody(getJsonFromFile("responseMonitorScanDoneError.json"))));
 
         ArachniClient api = ArachniRestClientBuilder.create(new URL("http://127.0.0.1:8089")).build();
+        Scan scan = new ScanRestImpl("123456", (ArachniRestClient) api);
+
+        ResponseScan response = scan.monitor();
         
-        ResponseScan scan = api.monitorScan("123456");
-        
-        assertFalse(scan.isBusy());
-        assertEquals("done", scan.getStatus());
-        assertEquals("a052742a96b89f8c2ee83928a8d893cd", scan.getSeed());
-        assertThat(scan.getErrors().size(), greaterThan(10));
+        assertFalse(response.isBusy());
+        assertEquals("done", response.getStatus());
+        assertEquals("a052742a96b89f8c2ee83928a8d893cd", response.getSeed());
+        assertThat(response.getErrors().size(), greaterThan(10));
     }
 
     @Test
@@ -154,8 +158,9 @@ public class ArachniApiRestTest extends AbstractRestTest {
                 .withStatus(200)));
 
         ArachniClient api = ArachniRestClientBuilder.create(new URL("http://127.0.0.1:8089")).build();
+        Scan scan = new ScanRestImpl("45c8348ef439885b819ab51cb78aa334", (ArachniRestClient) api);
 
-        assertTrue(api.shutdownScan("45c8348ef439885b819ab51cb78aa334"));
+        assertTrue(scan.shutdown());
     }
     
     @Test
@@ -166,9 +171,10 @@ public class ArachniApiRestTest extends AbstractRestTest {
                 .withBody(getTextFromFile("responseDeleteScanNotFound.txt"))));
 
         ArachniClient api = ArachniRestClientBuilder.create(new URL("http://127.0.0.1:8089")).build();
+        Scan scan = new ScanRestImpl("45c8348ef439885b819ab51cb78aa334", (ArachniRestClient) api);
         
         try {
-            assertTrue(api.shutdownScan("45c8348ef439885b819ab51cb78aa334"));
+            assertTrue(scan.shutdown());
             fail();
         } catch (ArachniClientException exception) {
             assertEquals("Scan not found for token: 45c8348ef439885b819ab51cb78aa334.", exception.getMessage());
@@ -182,8 +188,9 @@ public class ArachniApiRestTest extends AbstractRestTest {
                 .withBody(getJsonFromFile("responseReport.json"))));
 
         ArachniClient api = ArachniRestClientBuilder.create(new URL("http://127.0.0.1:8089")).build();
+        Scan scan = new ScanRestImpl("30dd87231d9022e97fca7f34b66ece43", (ArachniRestClient) api);
         
-        String report = api.getScanReportJson("30dd87231d9022e97fca7f34b66ece43");
+        String report = scan.getReportJson();
         
         JSONAssert.assertEquals("{\"version\": \"1.5.1\"}", report, false);
     }
@@ -195,9 +202,10 @@ public class ArachniApiRestTest extends AbstractRestTest {
                 .withBody(getByteArrayFromFile("responseReport.html.zip"))));
 
         ArachniClient api = ArachniRestClientBuilder.create(new URL("http://127.0.0.1:8089")).build();
+        Scan scan = new ScanRestImpl("30dd87231d9022e97fca7f34b66ece43", (ArachniRestClient) api);
         
         ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-        api.getScanReportHtml("30dd87231d9022e97fca7f34b66ece43", outstream);
+        scan.getReportHtml(outstream);
         
         assertEquals(2852, outstream.size());
     }

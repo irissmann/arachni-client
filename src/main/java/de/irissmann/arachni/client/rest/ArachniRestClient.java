@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -23,29 +26,77 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.irissmann.arachni.client.ArachniClientException;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
-public class ArachniRestClient {
+import de.irissmann.arachni.client.ArachniClient;
+import de.irissmann.arachni.client.ArachniClientException;
+import de.irissmann.arachni.client.Scan;
+import de.irissmann.arachni.client.rest.request.RequestScan;
+import de.irissmann.arachni.client.rest.response.ResponseScan;
+
+public class ArachniRestClient implements ArachniClient {
 
     public static final Logger log = LoggerFactory.getLogger(ArachniRestClient.class);
+
+    public final static String PATH_SCANS = "scans";
 
     private final CloseableHttpClient httpClient;
 
     private final URL baseUrl;
 
+    private Gson gson;
+
     public ArachniRestClient(URL baseUrl) {
-        this.baseUrl = baseUrl;
-        httpClient = HttpClientBuilder.create().build();
+        this(baseUrl, null);
     }
 
     public ArachniRestClient(URL baseUrl, UsernamePasswordCredentials credentials) {
         this.baseUrl = baseUrl;
-        BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY, credentials);
-        httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(credentialsProvider).build();
+        gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+        if (credentials == null) {
+            httpClient = HttpClientBuilder.create().build();
+        } else {
+            BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+            credentialsProvider.setCredentials(AuthScope.ANY, credentials);
+            httpClient = HttpClientBuilder.create().setDefaultCredentialsProvider(credentialsProvider).build();
+        }
+    }
+    
+    public Scan performScan(RequestScan scan) throws ArachniClientException {
+        String body = gson.toJson(scan);
+        String json = post(PATH_SCANS, body);
+        Map<String, String> response = gson.fromJson(json, Map.class);
+        return new ScanRestImpl(response.get("id"), this);
     }
 
-    public String get(String path) throws ArachniClientException {
+    public List<String> getScans() throws ArachniClientException {
+        String json;
+        json = get(PATH_SCANS);
+        Map<String, JsonObject> scans = gson.fromJson(json, Map.class);
+        return new ArrayList<String>(scans.keySet());
+    }
+    
+    protected ResponseScan monitor(String id) throws ArachniClientException {
+        String json = get(String.join("/", PATH_SCANS, id));
+        return gson.fromJson(json, ResponseScan.class);
+    }
+
+    protected boolean shutdownScan(String id) throws ArachniClientException {
+        return delete(String.join("/", PATH_SCANS, id));
+    }
+
+    protected String getScanReportJson(String id) throws ArachniClientException {
+        return get(String.join("/", PATH_SCANS, id, "report.json"));
+    }
+    
+    protected void getScanReportHtml(String id, OutputStream outstream) throws ArachniClientException {
+        getBinaryContent(String.join("/", PATH_SCANS, id, "report.html.zip"), outstream);
+    }
+
+    private String get(String path) throws ArachniClientException {
         HttpGet getRequest = new HttpGet(getUri(path));
         try {
             HttpResponse response = httpClient.execute(getRequest);
@@ -57,7 +108,7 @@ public class ArachniRestClient {
         }
     }
 
-    public void getBinaryContent(String path, OutputStream outstream) throws ArachniClientException {
+    private void getBinaryContent(String path, OutputStream outstream) throws ArachniClientException {
         HttpGet getRequest = new HttpGet(getUri(path));
         try {
             HttpResponse response = httpClient.execute(getRequest);
@@ -69,7 +120,7 @@ public class ArachniRestClient {
         }
     }
 
-    public String post(String path, String body) throws ArachniClientException {
+    private String post(String path, String body) throws ArachniClientException {
         log.debug("POST request to path {} with json: {}", path, body);
         HttpPost postRequest = new HttpPost(getUri(path));
         try {
@@ -90,7 +141,7 @@ public class ArachniRestClient {
         }
     }
 
-    public boolean delete(String path) throws ArachniClientException {
+    private boolean delete(String path) throws ArachniClientException {
         HttpDelete deleteRequest = new HttpDelete(getUri(path));
         try {
             HttpResponse response = httpClient.execute(deleteRequest);
@@ -115,7 +166,7 @@ public class ArachniRestClient {
         }
     }
 
-    protected void close() {
+    public void close() {
         log.info("Try to close http connection.");
         try {
             httpClient.close();

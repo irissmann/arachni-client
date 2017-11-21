@@ -26,12 +26,6 @@ public class ArachniRestClientBuilder {
     }
     
     public final ArachniClient build() {
-        ArachniApiRestImpl restApi = new ArachniApiRestImpl();
-        if (credentials != null) {
-            restApi.setRestClient(new ArachniRestClient(arachniRestUrl, credentials));
-        } else {
-            restApi.setRestClient(new ArachniRestClient(arachniRestUrl));
-        }
-        return restApi;
+        return new ArachniRestClient(arachniRestUrl, credentials);
     }
 }
