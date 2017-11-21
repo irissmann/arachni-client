@@ -10,12 +10,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-import de.irissmann.arachni.api.ArachniApi;
+import de.irissmann.arachni.api.ArachniClient;
 import de.irissmann.arachni.api.ArachniApiException;
 import de.irissmann.arachni.client.rest.request.RequestScan;
 import de.irissmann.arachni.client.rest.response.ResponseScan;
 
-public class ArachniApiRestImpl implements ArachniApi {
+public class ArachniApiRestImpl implements ArachniClient {
     
     public final static String PATH_SCANS = "scans";
 

@@ -4,7 +4,7 @@ import java.net.URL;
 
 import org.apache.http.auth.UsernamePasswordCredentials;
 
-import de.irissmann.arachni.api.ArachniApi;
+import de.irissmann.arachni.api.ArachniClient;
 
 public class ArachniApiRestBuilder {
 
@@ -25,7 +25,7 @@ public class ArachniApiRestBuilder {
         return this;
     }
     
-    public final ArachniApi build() {
+    public final ArachniClient build() {
         ArachniApiRestImpl restApi = new ArachniApiRestImpl();
         if (credentials != null) {
             restApi.setRestClient(new ArachniRestClient(arachniRestUrl, credentials));
