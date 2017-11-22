@@ -8,7 +8,7 @@ public abstract class Scan {
     
     private String id;
     
-    public Scan(String id) {
+    protected Scan(String id) {
         this.id = id;
     }
     

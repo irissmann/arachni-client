@@ -12,7 +12,7 @@ public class ArachniRestClientBuilder {
     private UsernamePasswordCredentials credentials;
     
 
-    protected ArachniRestClientBuilder(URL arachniRestUrl) {
+    private ArachniRestClientBuilder(URL arachniRestUrl) {
         this.arachniRestUrl = arachniRestUrl;
     }
 

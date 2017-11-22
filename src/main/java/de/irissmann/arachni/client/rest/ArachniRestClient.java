@@ -49,11 +49,11 @@ public class ArachniRestClient implements ArachniClient {
 
     private Gson gson;
 
-    public ArachniRestClient(URL baseUrl) {
+    ArachniRestClient(URL baseUrl) {
         this(baseUrl, null);
     }
 
-    public ArachniRestClient(URL baseUrl, UsernamePasswordCredentials credentials) {
+    ArachniRestClient(URL baseUrl, UsernamePasswordCredentials credentials) {
         this.baseUrl = baseUrl;
         gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
         if (credentials == null) {
@@ -79,20 +79,20 @@ public class ArachniRestClient implements ArachniClient {
         return new ArrayList<String>(scans.keySet());
     }
     
-    protected ResponseScan monitor(String id) throws ArachniClientException {
+    ResponseScan monitor(String id) throws ArachniClientException {
         String json = get(String.join("/", PATH_SCANS, id));
         return gson.fromJson(json, ResponseScan.class);
     }
 
-    protected boolean shutdownScan(String id) throws ArachniClientException {
+    boolean shutdownScan(String id) throws ArachniClientException {
         return delete(String.join("/", PATH_SCANS, id));
     }
 
-    protected String getScanReportJson(String id) throws ArachniClientException {
+    String getScanReportJson(String id) throws ArachniClientException {
         return get(String.join("/", PATH_SCANS, id, "report.json"));
     }
     
-    protected void getScanReportHtml(String id, OutputStream outstream) throws ArachniClientException {
+    void getScanReportHtml(String id, OutputStream outstream) throws ArachniClientException {
         getBinaryContent(String.join("/", PATH_SCANS, id, "report.html.zip"), outstream);
     }
 

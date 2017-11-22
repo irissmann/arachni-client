@@ -10,7 +10,7 @@ public class ScanRestImpl extends Scan {
     
     private ArachniRestClient restClient;
     
-    public ScanRestImpl(String id, ArachniRestClient restClient) {
+    ScanRestImpl(String id, ArachniRestClient restClient) {
         super(id);
         this.restClient = restClient;
     }
