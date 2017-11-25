@@ -16,18 +16,24 @@
 
 package de.irissmann.arachni.client.rest.request;
 
+import java.net.URL;
+
 @SuppressWarnings("unused")
 public class RequestScan {
 
-    private final String url;
+    private final URL url;
     
     private RequestHttp http;
     
-    public RequestScan(String url) {
+    RequestScan(URL url) {
         this.url = url;
     }
 
     public void setHttp(RequestHttp http) {
         this.http = http;
+    }
+    
+    public static final ScanBuilder create() {
+        return new ScanBuilder();
     }
 }

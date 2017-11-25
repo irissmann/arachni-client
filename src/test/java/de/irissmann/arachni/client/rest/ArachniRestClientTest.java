@@ -85,7 +85,7 @@ public class ArachniRestClientTest extends AbstractRestTest {
 
         ArachniClient arachniClient = ArachniRestClientBuilder.create(getUrl()).build();
 
-        RequestScan scanRequest = new RequestScan("http://ellen:8080");
+        RequestScan scanRequest = RequestScan.create().url("http://ellen:8080").build();
         RequestHttp http = new RequestHttp();
         scanRequest.setHttp(http);
         Scan scan = arachniClient.performScan(scanRequest);
@@ -103,7 +103,7 @@ public class ArachniRestClientTest extends AbstractRestTest {
 
         ArachniClient arachniClient = ArachniRestClientBuilder.create(getUrl()).build();
 
-        RequestScan scanRequest = new RequestScan("http://ellen:8080");
+        RequestScan scanRequest = RequestScan.create().url("http://ellen:8080").build();
         try {
             arachniClient.performScan(scanRequest);
             fail();
@@ -122,7 +122,7 @@ public class ArachniRestClientTest extends AbstractRestTest {
 
         ArachniClient arachniClient = ArachniRestClientBuilder.create(getUrl()).build();
 
-        RequestScan scanRequest = new RequestScan("http://ellen:8080");
+        RequestScan scanRequest = RequestScan.create().url("http://ellen:8080").build();
         RequestHttp http = new RequestHttp().setRequestConcurrency(33)
                 .setRequestQueueSize(42)
                 .setRequestRedirectLimit(2)
