@@ -25,12 +25,18 @@ public class ScanRequest {
     
     private RequestHttp http;
     
+    private Scope scope;
+    
     ScanRequest(URL url) {
         this.url = url;
     }
 
     public void setHttp(RequestHttp http) {
         this.http = http;
+    }
+    
+    void setScope(Scope scope) {
+        this.scope = scope;
     }
     
     public static final ScanBuilder create() {

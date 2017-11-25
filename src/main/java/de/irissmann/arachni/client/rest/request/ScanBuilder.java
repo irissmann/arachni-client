@@ -22,10 +22,12 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-final public class ScanBuilder {
+public final class ScanBuilder {
     Logger log = LoggerFactory.getLogger(ScanBuilder.class);
     
     private URL url;
+    
+    private Scope scope;
     
     public ScanBuilder url(String url) {
         try {
@@ -37,12 +39,21 @@ final public class ScanBuilder {
         
         return this;
     }
+    
+    public ScanBuilder scope(Scope scope) {
+        this.scope = scope;
+        return this;
+    }
 
     public ScanRequest build() {
         if (url == null) {
             throw new IllegalArgumentException("URL must not be null.");
         }
-        ScanRequest scan = new ScanRequest(url);
-        return scan;
+        ScanRequest scanRequest = new ScanRequest(url);
+        
+        if (scope != null) {
+            scanRequest.setScope(scope);
+        }
+        return scanRequest;
     }
 }

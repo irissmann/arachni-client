@@ -54,6 +54,7 @@ import de.irissmann.arachni.client.Scan;
 import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.rest.request.RequestHttp;
 import de.irissmann.arachni.client.rest.request.ScanRequest;
+import de.irissmann.arachni.client.rest.request.Scope;
 import de.irissmann.arachni.client.rest.response.ResponseScan;
 
 public class ArachniRestClientTest extends AbstractRestTest {
@@ -122,7 +123,12 @@ public class ArachniRestClientTest extends AbstractRestTest {
 
         ArachniClient arachniClient = ArachniRestClientBuilder.create(getUrl()).build();
 
-        ScanRequest scanRequest = ScanRequest.create().url("http://ellen:8080").build();
+        Scope scope = new Scope();
+        scope.setPageLimit(5);
+        ScanRequest scanRequest = ScanRequest.create()
+                .url("http://ellen:8080")
+                .scope(scope)
+                .build();
         RequestHttp http = new RequestHttp().setRequestConcurrency(33)
                 .setRequestQueueSize(42)
                 .setRequestRedirectLimit(2)
