@@ -50,7 +50,7 @@ import com.google.gson.JsonObject;
 import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.ArachniClientException;
 import de.irissmann.arachni.client.Scan;
-import de.irissmann.arachni.client.rest.request.RequestScan;
+import de.irissmann.arachni.client.rest.request.ScanRequest;
 import de.irissmann.arachni.client.rest.response.ResponseScan;
 
 public class ArachniRestClient implements ArachniClient {
@@ -81,7 +81,7 @@ public class ArachniRestClient implements ArachniClient {
         }
     }
     
-    public Scan performScan(RequestScan scan) throws ArachniClientException {
+    public Scan performScan(ScanRequest scan) throws ArachniClientException {
         String body = gson.toJson(scan);
         String json = post(PATH_SCANS, body);
         Map<String, String> response = gson.fromJson(json, Map.class);

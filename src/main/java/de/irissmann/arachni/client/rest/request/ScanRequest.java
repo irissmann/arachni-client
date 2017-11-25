@@ -19,13 +19,13 @@ package de.irissmann.arachni.client.rest.request;
 import java.net.URL;
 
 @SuppressWarnings("unused")
-public class RequestScan {
+public class ScanRequest {
 
     private final URL url;
     
     private RequestHttp http;
     
-    RequestScan(URL url) {
+    ScanRequest(URL url) {
         this.url = url;
     }
 

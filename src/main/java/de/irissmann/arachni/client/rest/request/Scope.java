@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
-package de.irissmann.arachni.client;
+package de.irissmann.arachni.client.rest.request;
 
-import java.util.List;
-
-import de.irissmann.arachni.client.rest.request.ScanRequest;
-
-public interface ArachniClient {
-	
-	public List<String> getScans() throws ArachniClientException;
-	
-	public Scan performScan(ScanRequest scan) throws ArachniClientException;
-	
-	public void close();
+@SuppressWarnings("unused")
+public class Scope {
+    
+    private Integer pageLimit;
+    
+    public void setPageLimit(int pageLimit) {
+        this.pageLimit = pageLimit;
+    }
 }
