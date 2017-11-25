@@ -42,7 +42,7 @@ public class ResponseScan {
         return seed;
     }
     
-    public List<?> getErrors() {
+    public List<String> getErrors() {
         return errors;
     }
     
