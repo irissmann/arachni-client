@@ -31,7 +31,7 @@ public class ScanRequest {
         this.url = url;
     }
 
-    public void setHttp(RequestHttp http) {
+    void setHttp(RequestHttp http) {
         this.http = http;
     }
     

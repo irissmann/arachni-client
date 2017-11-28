@@ -87,8 +87,6 @@ public class ArachniRestClientTest extends AbstractRestTest {
         ArachniClient arachniClient = ArachniRestClientBuilder.create(getUrl()).build();
 
         ScanRequest scanRequest = ScanRequest.create().url("http://ellen:8080").build();
-        RequestHttp http = new RequestHttp();
-        scanRequest.setHttp(http);
         Scan scan = arachniClient.performScan(scanRequest);
         assertEquals("919813cdb162af0c091c34fca3823b89", scan.getId());
         verify(postRequestedFor(urlEqualTo("/scans")).withRequestBody(equalToJson("{\"url\":\"http://ellen:8080\"}", true, true)));
@@ -123,18 +121,20 @@ public class ArachniRestClientTest extends AbstractRestTest {
 
         ArachniClient arachniClient = ArachniRestClientBuilder.create(getUrl()).build();
 
-        Scope scope = new Scope();
-        scope.setPageLimit(5);
-        ScanRequest scanRequest = ScanRequest.create()
-                .url("http://ellen:8080")
-                .scope(scope)
+        Scope scope = Scope.create()
+                .pageLimit(5)
+                .addExcludePathPatterns(".js|.css")
                 .build();
         RequestHttp http = new RequestHttp().setRequestConcurrency(33)
                 .setRequestQueueSize(42)
                 .setRequestRedirectLimit(2)
                 .setRequestTimeout(5000)
                 .setResponseMaxSize(333222);
-        scanRequest.setHttp(http);
+        ScanRequest scanRequest = ScanRequest.create()
+                .url("http://ellen:8080")
+                .scope(scope)
+                .http(http)
+                .build();
         arachniClient.performScan(scanRequest);
         verify(postRequestedFor(urlEqualTo("/scans")).withRequestBody(equalToJson(getJsonFromFile("requestScanHttp.json"), true, true)));
     }

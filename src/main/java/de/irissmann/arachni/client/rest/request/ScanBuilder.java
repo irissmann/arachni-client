@@ -23,17 +23,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class ScanBuilder {
-    Logger log = LoggerFactory.getLogger(ScanBuilder.class);
+    private static final Logger log = LoggerFactory.getLogger(ScanBuilder.class);
     
     private URL url;
     
     private Scope scope;
     
+    private RequestHttp requestHttp;
+    
     public ScanBuilder url(String url) {
         try {
             this.url = new URL(url);
         } catch (MalformedURLException exception) {
-            log.warn(exception.getMessage(), exception);
+            log.info(exception.getMessage(), exception);
             throw new IllegalArgumentException(exception.getMessage(), exception);
         }
         
@@ -44,15 +46,27 @@ public final class ScanBuilder {
         this.scope = scope;
         return this;
     }
+    
+    public ScanBuilder http(RequestHttp requestHttp) {
+        this.requestHttp = requestHttp;
+        return this;
+    }
 
     public ScanRequest build() {
         if (url == null) {
+            log.info("No URL specified.");
             throw new IllegalArgumentException("URL must not be null.");
         }
         ScanRequest scanRequest = new ScanRequest(url);
         
         if (scope != null) {
+            log.debug("Set scope.");
             scanRequest.setScope(scope);
+        }
+        
+        if (requestHttp != null) {
+            log.debug("Set http options.");
+            scanRequest.setHttp(requestHttp);
         }
         return scanRequest;
     }

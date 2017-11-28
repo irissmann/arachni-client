@@ -16,12 +16,29 @@
 
 package de.irissmann.arachni.client.rest.request;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SuppressWarnings("unused")
 public class Scope {
     
     private Integer pageLimit;
     
-    public void setPageLimit(int pageLimit) {
+    private List<String> excludePathPatterns;
+    
+    Scope() {
+        super();
+    }
+    
+    void setPageLimit(int pageLimit) {
         this.pageLimit = pageLimit;
+    }
+    
+    void setExcludePathPatterns(List<String> excludePathPatterns) {
+        this.excludePathPatterns = excludePathPatterns;
+    }
+    
+    public static final ScopeBuilder create() {
+        return new ScopeBuilder();
     }
 }
