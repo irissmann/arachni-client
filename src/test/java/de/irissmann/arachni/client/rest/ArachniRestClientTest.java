@@ -125,11 +125,13 @@ public class ArachniRestClientTest extends AbstractRestTest {
                 .pageLimit(5)
                 .addExcludePathPatterns(".js|.css")
                 .build();
-        HttpParameters http = new HttpParameters().setRequestConcurrency(33)
-                .setRequestQueueSize(42)
-                .setRequestRedirectLimit(2)
-                .setRequestTimeout(5000)
-                .setResponseMaxSize(333222);
+        HttpParameters http = HttpParameters.create()
+                .requestConcurrency(33)
+                .requestQueueSize(42)
+                .requestRedirectLimit(2)
+                .requestTimeout(5000)
+                .responseMaxSize(333222)
+                .build();
         ScanRequest scanRequest = ScanRequest.create()
                 .url("http://ellen:8080")
                 .scope(scope)

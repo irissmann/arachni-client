@@ -16,10 +16,7 @@
 
 package de.irissmann.arachni.client.rest.request;
 
-@SuppressWarnings("unused")
-public class HttpParameters {
-    
-    private final String userAgent = "ArachniRestClient";
+public class HttpParametersBuilder {
     
     private Integer requestTimeout;
     
@@ -31,36 +28,58 @@ public class HttpParameters {
     
     private Integer responseMaxSize;
     
-    HttpParameters() {
+    HttpParametersBuilder() {
         super();
     }
     
-    HttpParameters setRequestTimeout(Integer requestTimeout) {
+    public HttpParametersBuilder requestTimeout(int requestTimeout) {
         this.requestTimeout = requestTimeout;
         return this;
     }
-
-    HttpParameters setRequestRedirectLimit(Integer requestRedirectLimit) {
+    
+    public HttpParametersBuilder requestRedirectLimit(int requestRedirectLimit) {
         this.requestRedirectLimit = requestRedirectLimit;
         return this;
     }
-
-    HttpParameters setRequestConcurrency(Integer requestConcurrency) {
+    
+    public HttpParametersBuilder requestConcurrency(int requestConcurrency) {
         this.requestConcurrency = requestConcurrency;
         return this;
     }
-
-    HttpParameters setRequestQueueSize(Integer requestQueueSize) {
+    
+    public HttpParametersBuilder requestQueueSize(int requestQueueSize) {
         this.requestQueueSize = requestQueueSize;
         return this;
     }
-
-    HttpParameters setResponseMaxSize(Integer responseMaxSize) {
+    
+    public HttpParametersBuilder responseMaxSize(int responseMaxSize) {
         this.responseMaxSize = responseMaxSize;
         return this;
     }
     
-    public static final HttpParametersBuilder create() {
-        return new HttpParametersBuilder();
+    public HttpParameters build() {
+        HttpParameters parameters = new HttpParameters();
+        
+        if (requestTimeout != null) {
+            parameters.setRequestTimeout(requestTimeout);
+        }
+        
+        if (requestRedirectLimit != null) {
+            parameters.setRequestRedirectLimit(requestRedirectLimit);
+        }
+        
+        if (requestConcurrency != null) {
+            parameters.setRequestConcurrency(requestConcurrency);
+        }
+        
+        if (requestQueueSize != null) {
+            parameters.setRequestQueueSize(requestQueueSize);
+        }
+        
+        if (responseMaxSize != null) {
+            parameters.setResponseMaxSize(responseMaxSize);
+        }
+        return parameters;
     }
+
 }
