@@ -29,7 +29,7 @@ public final class ScanBuilder {
     
     private Scope scope;
     
-    private RequestHttp requestHttp;
+    private HttpParameters requestHttp;
     
     public ScanBuilder url(String url) {
         try {
@@ -47,7 +47,7 @@ public final class ScanBuilder {
         return this;
     }
     
-    public ScanBuilder http(RequestHttp requestHttp) {
+    public ScanBuilder http(HttpParameters requestHttp) {
         this.requestHttp = requestHttp;
         return this;
     }

@@ -52,7 +52,7 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import de.irissmann.arachni.client.ArachniClientException;
 import de.irissmann.arachni.client.Scan;
 import de.irissmann.arachni.client.ArachniClient;
-import de.irissmann.arachni.client.rest.request.RequestHttp;
+import de.irissmann.arachni.client.rest.request.HttpParameters;
 import de.irissmann.arachni.client.rest.request.ScanRequest;
 import de.irissmann.arachni.client.rest.request.Scope;
 import de.irissmann.arachni.client.rest.response.ResponseScan;
@@ -125,7 +125,7 @@ public class ArachniRestClientTest extends AbstractRestTest {
                 .pageLimit(5)
                 .addExcludePathPatterns(".js|.css")
                 .build();
-        RequestHttp http = new RequestHttp().setRequestConcurrency(33)
+        HttpParameters http = new HttpParameters().setRequestConcurrency(33)
                 .setRequestQueueSize(42)
                 .setRequestRedirectLimit(2)
                 .setRequestTimeout(5000)

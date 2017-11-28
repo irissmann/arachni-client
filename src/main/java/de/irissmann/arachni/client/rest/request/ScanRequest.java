@@ -23,7 +23,7 @@ public class ScanRequest {
 
     private final URL url;
     
-    private RequestHttp http;
+    private HttpParameters http;
     
     private Scope scope;
     
@@ -31,7 +31,7 @@ public class ScanRequest {
         this.url = url;
     }
 
-    void setHttp(RequestHttp http) {
+    void setHttp(HttpParameters http) {
         this.http = http;
     }
     
