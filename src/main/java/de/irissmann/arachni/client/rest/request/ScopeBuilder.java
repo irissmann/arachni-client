@@ -24,18 +24,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ScopeBuilder {
-    
+
     private static final Logger log = LoggerFactory.getLogger(ScopeBuilder.class);
-    
+
     private Integer pageLimit;
-    
+
     private List<String> excludePathPatterns;
-    
+
     public ScopeBuilder pageLimit(int pageLimit) {
-        this.pageLimit = pageLimit;
+        if (pageLimit > 0) {
+            this.pageLimit = pageLimit;
+        } else {
+            log.info("PageLimit is not valid and will not be set.");
+        }
         return this;
     }
-    
+
     public ScopeBuilder addExcludePathPatterns(String pattern) {
         if (StringUtils.isEmpty(pattern)) {
             log.info("ExcludePathPattern is empty and will not be added.");
@@ -50,15 +54,15 @@ public class ScopeBuilder {
 
     public Scope build() {
         Scope scope = new Scope();
-        
+
         if (pageLimit != null) {
             scope.setPageLimit(pageLimit);
         }
-        
+
         if (excludePathPatterns != null) {
             scope.setExcludePathPatterns(excludePathPatterns);
         }
-        
+
         return scope;
     }
 }
