@@ -19,6 +19,7 @@ package de.irissmann.arachni.client.rest.request;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,9 +37,9 @@ public class ScopeBuilder {
     }
     
     public ScopeBuilder addExcludePathPatterns(String pattern) {
-        if (pattern == null) {
-            log.info("ExcludePathPattern is null.");
-            throw new IllegalArgumentException("ExcludePathPattern is null.");
+        if (StringUtils.isEmpty(pattern)) {
+            log.info("ExcludePathPattern is empty and will not be added.");
+            return this;
         }
         if (excludePathPatterns == null) {
             excludePathPatterns = new ArrayList<String>();
