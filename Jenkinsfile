@@ -23,5 +23,10 @@ pipeline {
                 }
             }
         }
+        stage('Install') {
+            steps {
+                sh 'mvn -Dmaven.test.skip=true install'
+            }
+        }
     }
 }
