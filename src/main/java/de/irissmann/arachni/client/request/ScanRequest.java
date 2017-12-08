@@ -39,7 +39,7 @@ public class ScanRequest {
         this.scope = scope;
     }
     
-    public static final ScanBuilder create() {
-        return new ScanBuilder();
+    public static final ScanRequestBuilder create() {
+        return new ScanRequestBuilder();
     }
 }

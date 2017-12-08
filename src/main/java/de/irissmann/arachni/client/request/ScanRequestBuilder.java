@@ -22,8 +22,8 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class ScanBuilder {
-    private static final Logger log = LoggerFactory.getLogger(ScanBuilder.class);
+public final class ScanRequestBuilder {
+    private static final Logger log = LoggerFactory.getLogger(ScanRequestBuilder.class);
     
     private URL url;
     
@@ -31,7 +31,7 @@ public final class ScanBuilder {
     
     private HttpParameters requestHttp;
     
-    public ScanBuilder url(String url) {
+    public ScanRequestBuilder url(String url) {
         try {
             this.url = new URL(url);
         } catch (MalformedURLException exception) {
@@ -42,12 +42,12 @@ public final class ScanBuilder {
         return this;
     }
     
-    public ScanBuilder scope(Scope scope) {
+    public ScanRequestBuilder scope(Scope scope) {
         this.scope = scope;
         return this;
     }
     
-    public ScanBuilder http(HttpParameters requestHttp) {
+    public ScanRequestBuilder http(HttpParameters requestHttp) {
         this.requestHttp = requestHttp;
         return this;
     }
