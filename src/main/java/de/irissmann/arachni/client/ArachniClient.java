@@ -18,7 +18,7 @@ package de.irissmann.arachni.client;
 
 import java.util.List;
 
-import de.irissmann.arachni.client.rest.request.ScanRequest;
+import de.irissmann.arachni.client.request.ScanRequest;
 
 /**
  * Interface to send requests to an Arachni Security Scanner instance. Use a builder to get an instance. The following

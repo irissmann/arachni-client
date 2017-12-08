@@ -49,9 +49,9 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.ArachniClientException;
 import de.irissmann.arachni.client.Scan;
-import de.irissmann.arachni.client.rest.request.HttpParameters;
-import de.irissmann.arachni.client.rest.request.ScanRequest;
-import de.irissmann.arachni.client.rest.request.Scope;
+import de.irissmann.arachni.client.request.HttpParameters;
+import de.irissmann.arachni.client.request.ScanRequest;
+import de.irissmann.arachni.client.request.Scope;
 import de.irissmann.arachni.client.rest.response.ResponseScan;
 
 public class ArachniRestClientTest extends AbstractRestTest {

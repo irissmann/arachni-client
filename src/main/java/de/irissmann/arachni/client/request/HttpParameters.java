@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.irissmann.arachni.client.rest.request;
+package de.irissmann.arachni.client.request;
 
 @SuppressWarnings("unused")
 public class HttpParameters {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.irissmann.arachni.client.rest.request;
+package de.irissmann.arachni.client.request;
 
 import java.util.ArrayList;
 import java.util.List;
