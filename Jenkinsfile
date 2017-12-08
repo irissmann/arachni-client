@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'mvn -Dmaven.test.skip=true clean compile'
+                sh 'mvn clean compile'
             }
         }
         stage('Test') {
