@@ -84,8 +84,8 @@ public class ArachniRestClient implements ArachniClient {
     /* (non-Javadoc)
      * @see de.irissmann.arachni.client.ArachniClient#performScan(de.irissmann.arachni.client.rest.request.ScanRequest)
      */
-    public Scan performScan(ScanRequest scan) throws ArachniClientException {
-        String body = gson.toJson(scan);
+    public Scan performScan(ScanRequest scanRequest) throws ArachniClientException {
+        String body = gson.toJson(scanRequest);
         String json = post(PATH_SCANS, body);
         Map<String, String> response = gson.fromJson(json, Map.class);
         return new ScanRestImpl(response.get("id"), this);
@@ -197,6 +197,7 @@ public class ArachniRestClient implements ArachniClient {
             httpClient.close();
         } catch (IOException exception) {
             log.error(exception.getMessage(), exception);
+            throw new ArachniClientException(exception.getMessage());
         }
     }
 }

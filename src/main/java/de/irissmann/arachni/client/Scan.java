@@ -20,6 +20,11 @@ import java.io.OutputStream;
 
 import de.irissmann.arachni.client.rest.response.ResponseScan;
 
+/**
+ * With a {@code Scan} instance you can get all informations and reports from Arachni Security Scanner. 
+ * 
+ * @author Ingo Rissmann
+ * */
 public abstract class Scan {
     
     private String id;
@@ -39,5 +44,4 @@ public abstract class Scan {
     public abstract String getReportJson() throws ArachniClientException;
 
     public abstract void getReportHtml(OutputStream outstream) throws ArachniClientException;
-    
 }

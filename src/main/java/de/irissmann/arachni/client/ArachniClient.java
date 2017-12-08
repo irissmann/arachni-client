@@ -20,22 +20,50 @@ import java.util.List;
 
 import de.irissmann.arachni.client.rest.request.ScanRequest;
 
+/**
+ * Interface to send requests to an Arachni Security Scanner instance. Use a builder to get an instance. The following
+ * example creates an instance of {@code ArachniRestClient}
+ * 
+ * <pre>
+ * {@code
+ * ArachniClient arachniClient = ArachniRestClientBuilder
+ *   .create("http://127.0.0.1:8080")
+ *   .build();
+ * }
+ * </pre>
+ * 
+ * @author Ingo Rissmann
+ * @see de.irissmann.arachni.client.rest.ArachniRestClientBuilder
+ */
 public interface ArachniClient {
 	
 	/**
+	 * Returns a list with all scan id's.
+	 * This method can throw the runtime exception {@code ArachniClientException}.
 	 * 
-	 * 
-	 * @return
+	 * @return List with all scan id's.
 	 * @throws ArachniClientException
 	 */
 	public List<String> getScans();
 	
 	/**
-	 * @param scan
-	 * @return
+	 * Performs a new scan on the Arachni Rest Server and returns a {@code Scan} object. To start a new you have to
+	 * create a {@code ScanRequest} first.
+	 * 
+	 * Use the returned {@code Scan} object for further activities.
+	 * 
+	 * @param scanRequest Request with all information needed for the scan.
+	 * @return A {@code Scan} object.
+	 * @throws ArachniClientException
+	 * @see Scan, ScanRequest
+	 */
+	public Scan performScan(ScanRequest scanRequest);
+	
+	/**
+	 * Depends on implementation the client close connections to Arachni Security Scanner. Use this careful because
+	 * after calling this method the {@code ArachniClient} and all created {@code Scan} objects can not be used anymore.
+	 * 
 	 * @throws ArachniClientException
 	 */
-	public Scan performScan(ScanRequest scan);
-	
 	public void close();
 }

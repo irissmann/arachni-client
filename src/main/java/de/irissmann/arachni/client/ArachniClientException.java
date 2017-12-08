@@ -16,6 +16,11 @@
 
 package de.irissmann.arachni.client;
 
+/**
+ * This runtime exception will be thrown if something unforeseen is happen. 
+ * 
+ * @author Ingo Rissmann
+ */
 public class ArachniClientException extends RuntimeException {
 
     private static final long serialVersionUID = 2088423549757451992L;
