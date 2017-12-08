@@ -25,10 +25,21 @@ public class ArachniClientException extends RuntimeException {
 
     private static final long serialVersionUID = 2088423549757451992L;
 
+    /**
+     * Constructor for a new {@code ArachniClientException}.
+     * 
+     * @param message Message to describe the reason of this exception.
+     */
     public ArachniClientException(String message) {
         super(message);
     }
     
+    /**
+     * Constructor for a new {@code ArachniClientException}.
+     * 
+     * @param message Message to describe the reason of this exception.
+     * @param exception The cause exception.
+     */
     public ArachniClientException(String message, Exception exception) {
         super(message, exception);
     }

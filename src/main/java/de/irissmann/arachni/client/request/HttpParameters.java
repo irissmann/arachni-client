@@ -60,6 +60,11 @@ public class HttpParameters {
         return this;
     }
     
+    /**
+     * Returns a builder to create a {@code HttpParameters} object.
+     * 
+     * @return The {@code HttpParametersBuilder}
+     */
     public static final HttpParametersBuilder create() {
         return new HttpParametersBuilder();
     }

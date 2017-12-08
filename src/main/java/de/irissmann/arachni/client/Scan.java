@@ -33,15 +33,47 @@ public abstract class Scan {
         this.id = id;
     }
     
+    /**
+     * Returns the id of the scan.
+     * 
+     * @return The id.
+     */
     public String getId() {
         return id;
     }
 
-    public abstract ResponseScan monitor() throws ArachniClientException;
+    /**
+     * Monitors the scan and returns a {@code ReportScan} object. This method can thrown a 
+     * {@code ArachniClientException}.
+     * 
+     * @return A {@code ReportScan} with all monitoring information.
+     * @throws ArachniClientException
+     */
+    public abstract ResponseScan monitor();
 
-    public abstract boolean shutdown() throws ArachniClientException;
+    /**
+     * This call needs to take place after each scan is done in order to prevent zombie processes.
+     * Once that call is made, the scan process will be killed and removed from the service, if you wish to retrieve the
+     * report you will need to do so prior to performing this call.
+     *
+     * @return {@code true} if shutdown was successful.
+     * @throws ArachniClientException
+     */
+    public abstract boolean shutdown();
 
-    public abstract String getReportJson() throws ArachniClientException;
+    /**
+     * Retrieve the scan report as JSON string. This method can thrown an {@link ArachniClientException} 
+     * 
+     * @return The scan report as JSON string.
+     * @throws ArachniClientException
+     */
+    public abstract String getReportJson();
 
-    public abstract void getReportHtml(OutputStream outstream) throws ArachniClientException;
+    /**
+     * Writes the scan HTML report in a given {@code OutputStream} as a zip file. 
+     * 
+     * @param outstream The {@code OutputStream} object to write the report.
+     * @throws ArachniClientException
+     */
+    public abstract void getReportHtml(OutputStream outstream);
 }

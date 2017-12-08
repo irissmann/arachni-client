@@ -16,6 +16,12 @@
 
 package de.irissmann.arachni.client.request;
 
+/**
+ * This is a builder to create an instance of {@link HttpParameters}. To get an instance of this builder call 
+ * {@link HttpParameters#create()}.
+ * 
+ * @author Ingo Rissmann
+ */
 public class HttpParametersBuilder {
     
     private Integer requestTimeout;

@@ -18,10 +18,15 @@ package de.irissmann.arachni.client.rest;
 
 import java.io.OutputStream;
 
-import de.irissmann.arachni.client.ArachniClientException;
 import de.irissmann.arachni.client.Scan;
 import de.irissmann.arachni.client.response.ResponseScan;
 
+/**
+ * This is a REST API implementation of the {@code Scan} interface. It is using an {@code ArachniRestClient} to 
+ * communicate with a Arachni REST server.
+ * 
+ * @author Ingo Rissmann
+ */
 public class ScanRestImpl extends Scan {
     
     private ArachniRestClient restClient;
@@ -31,23 +36,35 @@ public class ScanRestImpl extends Scan {
         this.restClient = restClient;
     }
 
+    /* (non-Javadoc)
+     * @see de.irissmann.arachni.client.Scan#monitor()
+     */
     @Override
-    public ResponseScan monitor() throws ArachniClientException {
+    public ResponseScan monitor() {
         return restClient.monitor(getId());
     }
 
+    /* (non-Javadoc)
+     * @see de.irissmann.arachni.client.Scan#shutdown()
+     */
     @Override
-    public boolean shutdown() throws ArachniClientException {
+    public boolean shutdown() {
         return restClient.shutdownScan(getId());
     }
 
+    /* (non-Javadoc)
+     * @see de.irissmann.arachni.client.Scan#getReportJson()
+     */
     @Override
-    public String getReportJson() throws ArachniClientException {
+    public String getReportJson() {
         return restClient.getScanReportJson(getId());
     }
 
+    /* (non-Javadoc)
+     * @see de.irissmann.arachni.client.Scan#getReportHtml(java.io.OutputStream)
+     */
     @Override
-    public void getReportHtml(OutputStream outstream) throws ArachniClientException {
+    public void getReportHtml(OutputStream outstream) {
         restClient.getScanReportHtml(getId(), outstream);
     }
 

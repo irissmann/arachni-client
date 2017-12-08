@@ -55,7 +55,7 @@ public interface ArachniClient {
 	 * @param scanRequest Request with all information needed for the scan.
 	 * @return A {@code Scan} object.
 	 * @throws ArachniClientException
-	 * @see Scan, ScanRequest
+	 * 
 	 */
 	public Scan performScan(ScanRequest scanRequest);
 	
