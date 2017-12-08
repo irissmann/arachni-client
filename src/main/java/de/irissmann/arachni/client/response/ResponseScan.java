@@ -14,19 +14,39 @@
  * limitations under the License.
  */
 
-package de.irissmann.arachni.client.rest.response;
+package de.irissmann.arachni.client.response;
 
-public class Statistics {
+import java.util.List;
+
+public class ResponseScan {
     
-    private int foundPages;
+    private boolean busy;
     
-    private int auditedPages;
+    private String status;
     
-    public int getFoundPages() {
-        return foundPages;
+    private String seed;
+    
+    private List<String> errors;
+    
+    private Statistics statistics;
+    
+    public boolean isBusy() {
+        return busy;
     }
     
-    public int getAuditedPages() {
-        return auditedPages;
+    public String getStatus() {
+        return status;
+    }
+    
+    public String getSeed() {
+        return seed;
+    }
+    
+    public List<String> getErrors() {
+        return errors;
+    }
+    
+    public Statistics getStatistics() {
+        return statistics;
     }
 }

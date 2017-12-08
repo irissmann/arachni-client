@@ -18,7 +18,7 @@ package de.irissmann.arachni.client;
 
 import java.io.OutputStream;
 
-import de.irissmann.arachni.client.rest.response.ResponseScan;
+import de.irissmann.arachni.client.response.ResponseScan;
 
 /**
  * With a {@code Scan} instance you can get all informations and reports from Arachni Security Scanner. 

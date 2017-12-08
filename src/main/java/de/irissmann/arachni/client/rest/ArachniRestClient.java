@@ -51,7 +51,7 @@ import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.ArachniClientException;
 import de.irissmann.arachni.client.Scan;
 import de.irissmann.arachni.client.request.ScanRequest;
-import de.irissmann.arachni.client.rest.response.ResponseScan;
+import de.irissmann.arachni.client.response.ResponseScan;
 
 public class ArachniRestClient implements ArachniClient {
 

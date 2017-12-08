@@ -52,7 +52,7 @@ import de.irissmann.arachni.client.Scan;
 import de.irissmann.arachni.client.request.HttpParameters;
 import de.irissmann.arachni.client.request.ScanRequest;
 import de.irissmann.arachni.client.request.Scope;
-import de.irissmann.arachni.client.rest.response.ResponseScan;
+import de.irissmann.arachni.client.response.ResponseScan;
 
 public class ArachniRestClientTest extends AbstractRestTest {
 
