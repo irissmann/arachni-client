@@ -37,7 +37,6 @@ import static org.junit.Assert.fail;
 
 import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
 import org.apache.http.HttpHeaders;
@@ -49,9 +48,9 @@ import org.skyscreamer.jsonassert.JSONAssert;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
+import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.ArachniClientException;
 import de.irissmann.arachni.client.Scan;
-import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.rest.request.HttpParameters;
 import de.irissmann.arachni.client.rest.request.ScanRequest;
 import de.irissmann.arachni.client.rest.request.Scope;
@@ -238,7 +237,7 @@ public class ArachniRestClientTest extends AbstractRestTest {
 
     @Test
     public void serverNotAvailableException() throws Exception {
-        ArachniClient arachniClient = ArachniRestClientBuilder.create(new URL("http://127.0.0.1:8873")).build();
+        ArachniClient arachniClient = ArachniRestClientBuilder.create("http://127.0.0.1:8873").build();
         try {
             arachniClient.getScans();
             fail();
@@ -247,7 +246,7 @@ public class ArachniRestClientTest extends AbstractRestTest {
         }
     }
     
-    private URL getUrl() throws MalformedURLException {
-        return new URL("http://127.0.0.1:" + wireMockRule.port());
+    private String getUrl() throws MalformedURLException {
+        return "http://127.0.0.1:" + wireMockRule.port();
     }
 }

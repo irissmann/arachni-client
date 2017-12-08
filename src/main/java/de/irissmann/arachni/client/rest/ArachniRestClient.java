@@ -81,6 +81,9 @@ public class ArachniRestClient implements ArachniClient {
         }
     }
     
+    /* (non-Javadoc)
+     * @see de.irissmann.arachni.client.ArachniClient#performScan(de.irissmann.arachni.client.rest.request.ScanRequest)
+     */
     public Scan performScan(ScanRequest scan) throws ArachniClientException {
         String body = gson.toJson(scan);
         String json = post(PATH_SCANS, body);
@@ -88,31 +91,34 @@ public class ArachniRestClient implements ArachniClient {
         return new ScanRestImpl(response.get("id"), this);
     }
 
-    public List<String> getScans() throws ArachniClientException {
+    /* (non-Javadoc)
+     * @see de.irissmann.arachni.client.ArachniClient#getScans()
+     */
+    public List<String> getScans() {
         String json;
         json = get(PATH_SCANS);
         Map<String, JsonObject> scans = gson.fromJson(json, Map.class);
         return new ArrayList<String>(scans.keySet());
     }
     
-    ResponseScan monitor(String id) throws ArachniClientException {
+    ResponseScan monitor(String id) {
         String json = get(String.join("/", PATH_SCANS, id));
         return gson.fromJson(json, ResponseScan.class);
     }
 
-    boolean shutdownScan(String id) throws ArachniClientException {
+    boolean shutdownScan(String id) {
         return delete(String.join("/", PATH_SCANS, id));
     }
 
-    String getScanReportJson(String id) throws ArachniClientException {
+    String getScanReportJson(String id) {
         return get(String.join("/", PATH_SCANS, id, "report.json"));
     }
     
-    void getScanReportHtml(String id, OutputStream outstream) throws ArachniClientException {
+    void getScanReportHtml(String id, OutputStream outstream) {
         getBinaryContent(String.join("/", PATH_SCANS, id, "report.html.zip"), outstream);
     }
 
-    private String get(String path) throws ArachniClientException {
+    private String get(String path) {
         HttpGet getRequest = new HttpGet(getUri(path));
         try {
             HttpResponse response = httpClient.execute(getRequest);
@@ -124,7 +130,7 @@ public class ArachniRestClient implements ArachniClient {
         }
     }
 
-    private void getBinaryContent(String path, OutputStream outstream) throws ArachniClientException {
+    private void getBinaryContent(String path, OutputStream outstream) {
         HttpGet getRequest = new HttpGet(getUri(path));
         try {
             HttpResponse response = httpClient.execute(getRequest);
@@ -136,7 +142,7 @@ public class ArachniRestClient implements ArachniClient {
         }
     }
 
-    private String post(String path, String body) throws ArachniClientException {
+    private String post(String path, String body) {
         log.debug("POST request to path {} with json: {}", path, body);
         HttpPost postRequest = new HttpPost(getUri(path));
         try {
@@ -157,7 +163,7 @@ public class ArachniRestClient implements ArachniClient {
         }
     }
 
-    private boolean delete(String path) throws ArachniClientException {
+    private boolean delete(String path) {
         HttpDelete deleteRequest = new HttpDelete(getUri(path));
         try {
             HttpResponse response = httpClient.execute(deleteRequest);
@@ -174,7 +180,7 @@ public class ArachniRestClient implements ArachniClient {
         }
     }
 
-    private URI getUri(String path) throws ArachniClientException {
+    private URI getUri(String path) {
         try {
             return new URL(baseUrl, path).toURI();
         } catch (Exception exception) {
@@ -182,6 +188,9 @@ public class ArachniRestClient implements ArachniClient {
         }
     }
 
+    /* (non-Javadoc)
+     * @see de.irissmann.arachni.client.ArachniClient#close()
+     */
     public void close() {
         log.info("Try to close http connection.");
         try {

@@ -16,7 +16,7 @@
 
 package de.irissmann.arachni.client;
 
-public class ArachniClientException extends Exception {
+public class ArachniClientException extends RuntimeException {
 
     private static final long serialVersionUID = 2088423549757451992L;
 

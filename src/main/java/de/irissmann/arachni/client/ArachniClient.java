@@ -22,9 +22,20 @@ import de.irissmann.arachni.client.rest.request.ScanRequest;
 
 public interface ArachniClient {
 	
-	public List<String> getScans() throws ArachniClientException;
+	/**
+	 * 
+	 * 
+	 * @return
+	 * @throws ArachniClientException
+	 */
+	public List<String> getScans();
 	
-	public Scan performScan(ScanRequest scan) throws ArachniClientException;
+	/**
+	 * @param scan
+	 * @return
+	 * @throws ArachniClientException
+	 */
+	public Scan performScan(ScanRequest scan);
 	
 	public void close();
 }
