@@ -16,6 +16,13 @@
 
 package de.irissmann.arachni.client.request;
 
+/**
+ * 
+ * 
+ * @author Ingo Rissmann
+ * @since 1.0.0
+ * @version %I%
+ */
 @SuppressWarnings("unused")
 public class HttpParameters {
     
