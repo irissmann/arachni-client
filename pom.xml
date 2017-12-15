@@ -4,7 +4,7 @@
   <groupId>de.irissmann</groupId>
   <artifactId>arachni-client</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  
+
   <name>Arachni Java Client</name>
   <description>A Java client to send request to the Arachni REST API.</description>
   <url>https://github.com/irissmann/arachni-client.git</url>
@@ -122,10 +122,48 @@
       <url>https://github.com/irissmann</url>
     </developer>
   </developers>
-  
+
   <scm>
     <connection>scm:git:git://github.com/irissmann/arachni-client.git</connection>
     <developerConnection>scm:git:ssh://github.com/irissmann/arachni-client.git</developerConnection>
     <url>https://github.com/irissmann/arachni-client.git</url>
   </scm>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>3.0.1</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <show>public</show>
+            </configuration>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
