@@ -3,6 +3,8 @@ arachni-client
 
 Introduction
 ------------
+Java client for the [Arachni Scanner](http://www.arachni-scanner.com/) REST API. It's developed and tested with version
+1.5.1-0.5.12 of the Arachni project.
 
 Usage
 -----
@@ -25,3 +27,22 @@ ArachniClient arachniClient = ArachniRestClientBuilder
     .addCredentials("username", "password")
     .build();
 ```
+
+To perform a new scan create a ScanRequest. It's best to use the fluent API like in the folling example:
+```java
+ScanRequest scanRequest = ScanRequest.create().url("http://address:port").build();
+Scan scan = arachniClient.performScan(scanRequest);
+```
+
+Request the status from a scan:
+```java
+ScanResponse response = scan.monitor();
+```
+
+Download a generated HTML report from the server:
+```java
+OutputStream outstream = new FileOutputStream(reportFile);
+scan.getReportHtml(outstream);
+```
+
+For more information see the Java Doc and the [ARACHNI REST API](https://github.com/Arachni/arachni/wiki/REST-API).
