@@ -18,7 +18,7 @@ package de.irissmann.arachni.client.response;
 
 import java.util.List;
 
-public class ResponseScan {
+public class ScanResponse {
     
     private boolean busy;
     

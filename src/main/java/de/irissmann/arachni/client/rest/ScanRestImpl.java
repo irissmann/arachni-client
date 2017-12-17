@@ -19,7 +19,7 @@ package de.irissmann.arachni.client.rest;
 import java.io.OutputStream;
 
 import de.irissmann.arachni.client.Scan;
-import de.irissmann.arachni.client.response.ResponseScan;
+import de.irissmann.arachni.client.response.ScanResponse;
 
 /**
  * This is a REST API implementation of the {@code Scan} interface. It is using an {@code ArachniRestClient} to 
@@ -40,7 +40,7 @@ public class ScanRestImpl extends Scan {
      * @see de.irissmann.arachni.client.Scan#monitor()
      */
     @Override
-    public ResponseScan monitor() {
+    public ScanResponse monitor() {
         return restClient.monitor(getId());
     }
 

@@ -52,7 +52,7 @@ import de.irissmann.arachni.client.Scan;
 import de.irissmann.arachni.client.request.HttpParameters;
 import de.irissmann.arachni.client.request.ScanRequest;
 import de.irissmann.arachni.client.request.Scope;
-import de.irissmann.arachni.client.response.ResponseScan;
+import de.irissmann.arachni.client.response.ScanResponse;
 
 public class ArachniRestClientTest extends AbstractRestTest {
 
@@ -135,7 +135,7 @@ public class ArachniRestClientTest extends AbstractRestTest {
 
         Scan scan = new ScanRestImpl("123456", (ArachniRestClient) arachniClient);
 
-        ResponseScan response = scan.monitor();
+        ScanResponse response = scan.monitor();
 
         assertTrue(response.isBusy());
         assertEquals("scanning", response.getStatus());
@@ -153,7 +153,7 @@ public class ArachniRestClientTest extends AbstractRestTest {
         ArachniClient arachniClient = ArachniRestClientBuilder.create(getUrl()).build();
         Scan scan = new ScanRestImpl("123456", (ArachniRestClient) arachniClient);
 
-        ResponseScan response = scan.monitor();
+        ScanResponse response = scan.monitor();
 
         assertFalse(response.isBusy());
         assertEquals("done", response.getStatus());

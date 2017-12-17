@@ -18,7 +18,7 @@ package de.irissmann.arachni.client;
 
 import java.io.OutputStream;
 
-import de.irissmann.arachni.client.response.ResponseScan;
+import de.irissmann.arachni.client.response.ScanResponse;
 
 /**
  * With a {@code Scan} instance you can get all informations and reports from Arachni Security Scanner. 
@@ -49,7 +49,7 @@ public abstract class Scan {
      * @return A {@code ReportScan} with all monitoring information.
      * @throws ArachniClientException
      */
-    public abstract ResponseScan monitor();
+    public abstract ScanResponse monitor();
 
     /**
      * This call needs to take place after each scan is done in order to prevent zombie processes.

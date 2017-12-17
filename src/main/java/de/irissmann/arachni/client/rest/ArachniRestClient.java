@@ -51,7 +51,7 @@ import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.ArachniClientException;
 import de.irissmann.arachni.client.Scan;
 import de.irissmann.arachni.client.request.ScanRequest;
-import de.irissmann.arachni.client.response.ResponseScan;
+import de.irissmann.arachni.client.response.ScanResponse;
 
 public class ArachniRestClient implements ArachniClient {
 
@@ -101,9 +101,9 @@ public class ArachniRestClient implements ArachniClient {
         return new ArrayList<String>(scans.keySet());
     }
     
-    ResponseScan monitor(String id) {
+    ScanResponse monitor(String id) {
         String json = get(String.join("/", PATH_SCANS, id));
-        return gson.fromJson(json, ResponseScan.class);
+        return gson.fromJson(json, ScanResponse.class);
     }
 
     boolean shutdownScan(String id) {
