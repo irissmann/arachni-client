@@ -22,6 +22,13 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Use this builder to create a {@code ScanRequest}. To get an instance of this builder call
+ * {@link ScanRequest#create()}.
+ * 
+ * @author Ingo Rissmann
+ * @since 1.0.0
+ */
 public final class ScanRequestBuilder {
     private static final Logger log = LoggerFactory.getLogger(ScanRequestBuilder.class);
     
@@ -31,6 +38,13 @@ public final class ScanRequestBuilder {
     
     private HttpParameters requestHttp;
     
+    /**
+     * Sets the URL of the site to scan. The URL is mandatory to build a {@code ScanRequest}.
+     * 
+     * @param url String with the URL to scan.
+     * @throws IllegalArgumentException If URL is invalid.
+     * @return This builder instance.
+     */
     public ScanRequestBuilder url(String url) {
         try {
             this.url = new URL(url);
@@ -38,20 +52,37 @@ public final class ScanRequestBuilder {
             log.info(exception.getMessage(), exception);
             throw new IllegalArgumentException(exception.getMessage(), exception);
         }
-        
         return this;
     }
     
+    /**
+     * Sets the scope for the site under scan.
+     * 
+     * @param scope The scope object.
+     * @return This builder instance.
+     */
     public ScanRequestBuilder scope(Scope scope) {
         this.scope = scope;
         return this;
     }
     
+    /**
+     * Sets the HTTP parameters for the site under scan.
+     * 
+     * @param requestHttp The HTTP parameters.
+     * @return This builder instance.
+     */
     public ScanRequestBuilder http(HttpParameters requestHttp) {
         this.requestHttp = requestHttp;
         return this;
     }
 
+    /**
+     * Checks the mandatory parameters and creates the {@code ScanRequest}.
+     * 
+     * @return A {@code ScanRequest}.
+     * @throws IllegalArgumentException If URL is empty.
+     */
     public ScanRequest build() {
         if (url == null) {
             log.info("No URL specified.");

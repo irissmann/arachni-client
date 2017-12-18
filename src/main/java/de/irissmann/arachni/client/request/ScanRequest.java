@@ -18,6 +18,14 @@ package de.irissmann.arachni.client.request;
 
 import java.net.URL;
 
+/**
+ * A {@code ScanRequest} is needed to perform a new scan. Use the {@code #create()} method to get a 
+ * {@code ScanRequestBuilder}.
+ * 
+ * @author Ingo Rissmann
+ * @since 1.0.0
+ * @see ScanRequestBuilder
+ */
 @SuppressWarnings("unused")
 public class ScanRequest {
 

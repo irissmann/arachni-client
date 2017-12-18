@@ -17,11 +17,11 @@
 package de.irissmann.arachni.client.request;
 
 /**
- * 
+ * Defines Http parameter settings for scan request.
  * 
  * @author Ingo Rissmann
  * @since 1.0.0
- * @version %I%
+ * @see HttpParametersBuilder
  */
 @SuppressWarnings("unused")
 public class HttpParameters {
