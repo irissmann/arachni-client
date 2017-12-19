@@ -24,6 +24,8 @@ package de.irissmann.arachni.client.request;
  * </div>
  * 
  * @author Ingo Rissmann
+ * @since 1.0.0
+ * 
  */
 public class HttpParametersBuilder {
     

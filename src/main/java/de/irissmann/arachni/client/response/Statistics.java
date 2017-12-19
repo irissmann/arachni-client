@@ -16,16 +16,33 @@
 
 package de.irissmann.arachni.client.response;
 
+/**
+ * Some scan statistics. 
+ * 
+ * @author Ingo Rissmann
+ * @since 1.0.0
+ *
+ */
 public class Statistics {
     
     private int foundPages;
     
     private int auditedPages;
     
+    /**
+     * Returns the number of pages found for the scan.
+     * 
+     * @return Number of pages.
+     */
     public int getFoundPages() {
         return foundPages;
     }
     
+    /**
+     * Returns the number of pages already audited.
+     * 
+     * @return Number audited pages.
+     */
     public int getAuditedPages() {
         return auditedPages;
     }

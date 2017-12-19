@@ -20,6 +20,8 @@ package de.irissmann.arachni.client;
  * This runtime exception will be thrown if something unforeseen is happen. 
  * 
  * @author Ingo Rissmann
+ * @since 1.0.0
+ * 
  */
 public class ArachniClientException extends RuntimeException {
 

@@ -19,6 +19,13 @@ package de.irissmann.arachni.client.request;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Defines scope parameter settings for a scan request.
+ * 
+ * @author Ingo Rissmann
+ * @since 1.0.0
+ *
+ */
 @SuppressWarnings("unused")
 public class Scope {
     
@@ -38,6 +45,11 @@ public class Scope {
         this.excludePathPatterns = excludePathPatterns;
     }
     
+    /**
+     * Returns a builder to create a {@code Scope} object.
+     * 
+     * @return The {@code ScopeBuilder}.
+     */
     public static final ScopeBuilder create() {
         return new ScopeBuilder();
     }

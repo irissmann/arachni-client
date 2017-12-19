@@ -24,6 +24,8 @@ import de.irissmann.arachni.client.response.ScanResponse;
  * With a {@code Scan} instance you can get all informations and reports from Arachni Security Scanner. 
  * 
  * @author Ingo Rissmann
+ * @since 1.0.0
+ * 
  * */
 public abstract class Scan {
     

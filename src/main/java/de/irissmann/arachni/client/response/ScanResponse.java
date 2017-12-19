@@ -18,6 +18,13 @@ package de.irissmann.arachni.client.response;
 
 import java.util.List;
 
+/**
+ * Monitoring an active scan will return a ScanResponse.
+ * 
+ * @author Ingo Rissmann
+ * @since 1.0.0
+ *
+ */
 public class ScanResponse {
     
     private boolean busy;
@@ -30,10 +37,20 @@ public class ScanResponse {
     
     private Statistics statistics;
     
+    /**
+     * Return {@code true} when the scan is still in progress, otherwise {@code false}. 
+     * 
+     * @return {@code true} when the scan is still in progress.
+     */
     public boolean isBusy() {
         return busy;
     }
     
+    /**
+     * Returns the scan status. For possible values visit the Arachni wiki page.
+     * 
+     * @return Scan status.
+     */
     public String getStatus() {
         return status;
     }
@@ -42,10 +59,20 @@ public class ScanResponse {
         return seed;
     }
     
+    /**
+     * Returns a list with error messages from scan if an error was happened.
+     * 
+     * @return List with errors.
+     */
     public List<String> getErrors() {
         return errors;
     }
     
+    /**
+     * Returns some statistics from the scan.
+     * 
+     * @return The statistics.
+     */
     public Statistics getStatistics() {
         return statistics;
     }

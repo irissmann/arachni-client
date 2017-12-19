@@ -34,6 +34,8 @@ import de.irissmann.arachni.client.request.ScanRequest;
  * 
  * @author Ingo Rissmann
  * @see de.irissmann.arachni.client.rest.ArachniRestClientBuilder
+ * @since 1.0.0
+ * 
  */
 public interface ArachniClient {
 	

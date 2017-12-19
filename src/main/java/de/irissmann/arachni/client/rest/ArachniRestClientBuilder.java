@@ -24,6 +24,11 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.ArachniClientException;
 
+/**
+ * @author Ingo Rissmann
+ * @since 1.0.0
+ *
+ */
 public class ArachniRestClientBuilder {
 
     private final URL arachniRestUrl;

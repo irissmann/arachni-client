@@ -23,6 +23,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This is a builder to create an instance of {@link Scope}. To get an instance of this builder call 
+ * {@link Scope#create()}.
+ * <div>
+ * For default values see also the Arachni wiki page.
+ * </div>
+ * 
+ * @author Ingo Rissmann
+ * @since 1.0.0
+ * 
+ */
 public class ScopeBuilder {
 
     private static final Logger log = LoggerFactory.getLogger(ScopeBuilder.class);
@@ -31,6 +42,12 @@ public class ScopeBuilder {
 
     private List<String> excludePathPatterns;
 
+    /**
+     * This option limits how many pages should be included in the scan.
+     * 
+     * @param pageLimit Number of pages to scan.
+     * @return This builder instance.
+     */
     public ScopeBuilder pageLimit(int pageLimit) {
         if (pageLimit > 0) {
             this.pageLimit = pageLimit;
@@ -40,6 +57,12 @@ public class ScopeBuilder {
         return this;
     }
 
+    /**
+     * Excludes resources whose URL matches the pattern.
+     * 
+     * @param pattern Pattern to exclude URL from scan.
+     * @return This builder instance.
+     */
     public ScopeBuilder addExcludePathPatterns(String pattern) {
         if (StringUtils.isEmpty(pattern)) {
             log.info("ExcludePathPattern is empty and will not be added.");
@@ -52,6 +75,11 @@ public class ScopeBuilder {
         return this;
     }
 
+    /**
+     * Returns a instance of {@code Scope} to change the default settings.
+     * 
+     * @return A {@code Scope} object.
+     */
     public Scope build() {
         Scope scope = new Scope();
 

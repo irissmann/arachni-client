@@ -53,9 +53,13 @@ import de.irissmann.arachni.client.Scan;
 import de.irissmann.arachni.client.request.ScanRequest;
 import de.irissmann.arachni.client.response.ScanResponse;
 
+/**
+ * @author Ingo Rissmann
+ * @since 1.0.0
+ */
 public class ArachniRestClient implements ArachniClient {
 
-    public static final Logger log = LoggerFactory.getLogger(ArachniRestClient.class);
+    private static final Logger log = LoggerFactory.getLogger(ArachniRestClient.class);
 
     public final static String PATH_SCANS = "scans";
 
