@@ -54,6 +54,8 @@ import de.irissmann.arachni.client.request.ScanRequest;
 import de.irissmann.arachni.client.response.ScanResponse;
 
 /**
+ * Implementation that use the Arachni REST interface.
+ * 
  * @author Ingo Rissmann
  * @since 1.0.0
  */

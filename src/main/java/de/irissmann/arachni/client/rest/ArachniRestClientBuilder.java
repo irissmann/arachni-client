@@ -25,6 +25,16 @@ import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.ArachniClientException;
 
 /**
+ * Builder to get an instance of the {@code ArachniRestClient} implementation. Use the {@code #create(String)}
+ * method like in this example:
+ * <pre>
+ * {@code
+ * ArachniClient arachniClient = ArachniRestClientBuilder
+ *    .create("http://127.0.0.1:8080")
+ *    .build();
+ * }
+ * </pre>
+ * 
  * @author Ingo Rissmann
  * @since 1.0.0
  *
@@ -38,6 +48,13 @@ public class ArachniRestClientBuilder {
         this.arachniRestUrl = arachniRestUrl;
     }
 
+    /**
+     * Returns an instance of this class.
+     * 
+     * @param arachniRestUrl The URL of the Arachni REST Server
+     * @return A builder.
+     * @throws ArachniClientException If the URL is malformed.
+     */
     public static ArachniRestClientBuilder create(String arachniRestUrl) {
         try {
             return new ArachniRestClientBuilder(new URL(arachniRestUrl));
@@ -46,11 +63,23 @@ public class ArachniRestClientBuilder {
         }
     }
 
+    /**
+     * Here you can set username and password if the Arachni REST API is secured with Basic Authentication.
+     * 
+     * @param username Username
+     * @param password Password
+     * @return This builder instance.
+     */
     public final ArachniRestClientBuilder addCredentials(String username, String password) {
         this.credentials = new UsernamePasswordCredentials(username, password);
         return this;
     }
 
+    /**
+     * Returns a instance of {@code ArachniRestClient}.
+     * 
+     * @return Instance of {@code ArachniRestClient}.
+     */
     public final ArachniClient build() {
         return new ArachniRestClient(arachniRestUrl, credentials);
     }
