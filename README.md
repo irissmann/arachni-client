@@ -6,6 +6,17 @@ Introduction
 Java client for the [Arachni Scanner](http://www.arachni-scanner.com/) REST API. It's developed and tested with version
 1.5.1-0.5.12 of the Arachni project.
 
+Maven
+-----
+The arachni-client artifacts are available on Maven central repository.
+```xml
+<dependency>
+  <groupId>de.irissmann</groupId>
+  <artifactId>arachni-client</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+
 Usage
 -----
 This client provides a very simple api to send REST request to an Arachni 
