@@ -10,10 +10,11 @@ Maven
 -----
 The arachni-client artifacts are available on Maven central repository.
 ```xml
+<!-- https://mvnrepository.com/artifact/de.irissmann/arachni-client -->
 <dependency>
-  <groupId>de.irissmann</groupId>
-  <artifactId>arachni-client</artifactId>
-  <version>1.0.0</version>
+    <groupId>de.irissmann</groupId>
+    <artifactId>arachni-client</artifactId>
+    <version>1.0.1</version>
 </dependency>
 ```
 
