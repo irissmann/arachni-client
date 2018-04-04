@@ -18,7 +18,10 @@ package de.irissmann.arachni.client.request;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +40,8 @@ public final class ScanRequestBuilder {
     private Scope scope;
     
     private HttpParameters requestHttp;
+    
+    private List<String> checks;
     
     /**
      * Sets the URL of the site to scan. The URL is mandatory to build a {@code ScanRequest}.
@@ -76,6 +81,24 @@ public final class ScanRequestBuilder {
         this.requestHttp = requestHttp;
         return this;
     }
+    
+    /**
+     * Adds a check.
+     * 
+     * @param check The check to add.
+     * @return This builder instance.
+     */
+    public ScanRequestBuilder addCheck(String check) {
+        if (StringUtils.isEmpty(check)) {
+            log.info("Check is empty and will not be added.");
+            return this;
+        }
+        if (checks == null) {
+            checks = new ArrayList<String>();
+        }
+        checks.add(check);
+        return this;
+    }
 
     /**
      * Checks the mandatory parameters and creates the {@code ScanRequest}.
@@ -99,6 +122,12 @@ public final class ScanRequestBuilder {
             log.debug("Set http options.");
             scanRequest.setHttp(requestHttp);
         }
+        
+        if (checks != null) {
+            log.debug("Set checks.");
+            scanRequest.setChecks(checks);
+        }
+        
         return scanRequest;
     }
 }
