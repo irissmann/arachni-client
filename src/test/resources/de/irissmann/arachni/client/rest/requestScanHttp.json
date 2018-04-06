@@ -15,5 +15,6 @@
     "scope": {
         "page_limit": 5,
         "exclude_path_patterns" : [".js|.css"]
-    }
+    },
+    "checks": ["*"]
 }

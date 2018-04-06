@@ -17,6 +17,7 @@
 package de.irissmann.arachni.client.request;
 
 import java.net.URL;
+import java.util.List;
 
 /**
  * A {@code ScanRequest} is needed to perform a new scan. Use the {@code #create()} method to get a 
@@ -35,6 +36,8 @@ public class ScanRequest {
     
     private Scope scope;
     
+    private List<String> checks;
+    
     ScanRequest(URL url) {
         this.url = url;
     }
@@ -45,6 +48,10 @@ public class ScanRequest {
     
     void setScope(Scope scope) {
         this.scope = scope;
+    }
+    
+    void setChecks(List<String> checks) {
+        this.checks = checks;
     }
     
     public static final ScanRequestBuilder create() {

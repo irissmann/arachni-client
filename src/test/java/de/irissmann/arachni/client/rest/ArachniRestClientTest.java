@@ -119,7 +119,11 @@ public class ArachniRestClientTest extends AbstractRestTest {
         Scope scope = Scope.create().pageLimit(5).addExcludePathPatterns(".js|.css").build();
         HttpParameters http = HttpParameters.create().requestConcurrency(33).requestQueueSize(42)
                 .requestRedirectLimit(2).requestTimeout(5000).responseMaxSize(333222).build();
-        ScanRequest scanRequest = ScanRequest.create().url("http://ellen:8080").scope(scope).http(http).build();
+        ScanRequest scanRequest = ScanRequest.create().url("http://ellen:8080")
+                .scope(scope)
+                .http(http)
+                .addCheck("*")
+                .build();
         arachniClient.performScan(scanRequest);
         verify(postRequestedFor(urlEqualTo("/scans"))
                 .withRequestBody(equalToJson(getJsonFromFile("requestScanHttp.json"), true, true)));
