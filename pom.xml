@@ -120,7 +120,7 @@
 
   <scm>
     <connection>scm:git:git://github.com/irissmann/arachni-client.git</connection>
-    <developerConnection>scm:git:ssh://github.com:irissmann/arachni-client.git</developerConnection>
+    <developerConnection>scm:git:ssh://github.com/irissmann/arachni-client.git</developerConnection>
     <url>https://github.com/irissmann/arachni-client.git</url>
   </scm>
 
