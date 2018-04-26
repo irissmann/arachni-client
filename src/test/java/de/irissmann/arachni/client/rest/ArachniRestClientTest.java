@@ -53,6 +53,7 @@ import de.irissmann.arachni.client.request.HttpParameters;
 import de.irissmann.arachni.client.request.ScanRequest;
 import de.irissmann.arachni.client.request.Scope;
 import de.irissmann.arachni.client.response.ScanResponse;
+import de.irissmann.arachni.client.rest.GsonUtils.MergeConflictStrategy;
 
 public class ArachniRestClientTest extends AbstractRestTest {
 
@@ -127,6 +128,86 @@ public class ArachniRestClientTest extends AbstractRestTest {
         arachniClient.performScan(scanRequest);
         verify(postRequestedFor(urlEqualTo("/scans"))
                 .withRequestBody(equalToJson(getJsonFromFile("requestScanHttp.json"), true, true)));
+    }
+
+    @Test
+    public void validateRequestWithHttpAndMerge() throws Exception {
+        stubFor(post(urlEqualTo("/scans"))
+                .withHeader(HttpHeaders.CONTENT_TYPE, containing(ContentType.APPLICATION_JSON.toString()))
+                .willReturn(aResponse().withStatus(200)
+                        .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())
+                        .withBody(getJsonFromFile("responsePerformScan.json"))));
+
+        ArachniClient arachniClient = ArachniRestClientBuilder.create(getUrl()).build();
+
+        Scope scope = Scope.create().pageLimit(5).addExcludePathPatterns(".js|.css").build();
+        HttpParameters http = HttpParameters.create().requestConcurrency(33).requestQueueSize(42)
+                .requestRedirectLimit(2).requestTimeout(5000).responseMaxSize(333222).build();
+        ScanRequest scanRequest = ScanRequest.create().url("http://ellen:8080")
+                .scope(scope)
+                .http(http)
+                .addCheck("*")
+                .build();
+        
+        String merge = getJsonFromFile("simpleMerge.json"); 
+        
+        arachniClient.performScan(scanRequest, merge);
+        verify(postRequestedFor(urlEqualTo("/scans"))
+                .withRequestBody(equalToJson(getJsonFromFile("requestScanHttpSimpleMerge.json"), true, true)));
+    }
+
+    @Test
+    public void validateRequestWithHttpAndMergeConflictObject() throws Exception {
+        stubFor(post(urlEqualTo("/scans"))
+                .withHeader(HttpHeaders.CONTENT_TYPE, containing(ContentType.APPLICATION_JSON.toString()))
+                .willReturn(aResponse().withStatus(200)
+                        .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())
+                        .withBody(getJsonFromFile("responsePerformScan.json"))));
+
+        ArachniClient arachniClient = ArachniRestClientBuilder.create(getUrl()).build();
+
+        Scope scope = Scope.create().pageLimit(5).addExcludePathPatterns(".js|.css").build();
+        HttpParameters http = HttpParameters.create().requestConcurrency(33).requestQueueSize(42)
+                .requestRedirectLimit(2).requestTimeout(5000).responseMaxSize(333222).build();
+        ScanRequest scanRequest = ScanRequest.create().url("http://ellen:8080")
+                .scope(scope)
+                .http(http)
+                .addCheck("*")
+                .build();
+        
+        String merge = getJsonFromFile("conflictMerge.json"); 
+        
+        arachniClient.performScan(scanRequest, merge);
+        verify(postRequestedFor(urlEqualTo("/scans"))
+                .withRequestBody(equalToJson(getJsonFromFile("requestScanHttpSimpleMerge.json"), true, true)));
+    }
+
+    @Test
+    public void validateRequestWithHttpAndMergeConflictString() throws Exception {
+        stubFor(post(urlEqualTo("/scans"))
+                .withHeader(HttpHeaders.CONTENT_TYPE, containing(ContentType.APPLICATION_JSON.toString()))
+                .willReturn(aResponse().withStatus(200)
+                        .withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())
+                        .withBody(getJsonFromFile("responsePerformScan.json"))));
+
+        ArachniClient arachniClient = ArachniRestClientBuilder.create(getUrl())
+                .setMergeConflictStratey(MergeConflictStrategy.PREFER_STRING)
+                .build();
+
+        Scope scope = Scope.create().pageLimit(5).addExcludePathPatterns(".js|.css").build();
+        HttpParameters http = HttpParameters.create().requestConcurrency(33).requestQueueSize(42)
+                .requestRedirectLimit(2).requestTimeout(5000).responseMaxSize(333222).build();
+        ScanRequest scanRequest = ScanRequest.create().url("http://ellen:8080")
+                .scope(scope)
+                .http(http)
+                .addCheck("*")
+                .build();
+        
+        String merge = getJsonFromFile("conflictMerge.json"); 
+        
+        arachniClient.performScan(scanRequest, merge);
+        verify(postRequestedFor(urlEqualTo("/scans"))
+                .withRequestBody(equalToJson(getJsonFromFile("requestScanHttpConflictMerge.json"), true, true)));
     }
 
     @Test

@@ -1,0 +1,6 @@
+{
+    "scope": {
+        "page_limit": 1
+    },
+    "platforms" : ["windows", "linux"]
+}
