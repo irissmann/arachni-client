@@ -23,6 +23,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 
 import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.ArachniClientException;
+import de.irissmann.arachni.client.rest.GsonUtils.MergeConflictStrategy;
 
 /**
  * Builder to get an instance of the {@code ArachniRestClient} implementation. Use the {@code #create(String)}
@@ -43,6 +44,7 @@ public class ArachniRestClientBuilder {
 
     private final URL arachniRestUrl;
     private UsernamePasswordCredentials credentials;
+    private MergeConflictStrategy mergeConflictStrategy = MergeConflictStrategy.PREFER_OBJECT;
 
     private ArachniRestClientBuilder(URL arachniRestUrl) {
         this.arachniRestUrl = arachniRestUrl;
@@ -74,6 +76,17 @@ public class ArachniRestClientBuilder {
         this.credentials = new UsernamePasswordCredentials(username, password);
         return this;
     }
+    
+    /**
+     * Specifies the merge strategy when a conflict occurs during a merge process of scan requests.
+     * 
+     * @param mergeConflictStrategy The strategy to set.
+     * @return This builder instance.
+     */
+    public final ArachniRestClientBuilder setMergeConflictStratey(MergeConflictStrategy mergeConflictStrategy) {
+        this.mergeConflictStrategy = mergeConflictStrategy;
+        return this;
+    }
 
     /**
      * Returns a instance of {@code ArachniRestClient}.
@@ -81,6 +94,6 @@ public class ArachniRestClientBuilder {
      * @return Instance of {@code ArachniRestClient}.
      */
     public final ArachniClient build() {
-        return new ArachniRestClient(arachniRestUrl, credentials);
+        return new ArachniRestClient(arachniRestUrl, credentials, mergeConflictStrategy);
     }
 }

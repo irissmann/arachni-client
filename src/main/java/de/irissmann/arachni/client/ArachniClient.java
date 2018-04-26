@@ -60,6 +60,16 @@ public interface ArachniClient {
 	 * 
 	 */
 	public Scan performScan(ScanRequest scanRequest);
+
+	/**
+     * Same as {@code performScan(ScanRequest scanRequest)} method but you can specify a Json string that will be
+     * merged into the request.
+     * 
+	 * @param scanRequest
+	 * @param mergeString
+	 * @return
+	 */
+	public Scan performScan(ScanRequest scanRequest, String mergeString);
 	
 	/**
 	 * Depends on implementation the client close connections to Arachni Security Scanner. Use this careful because

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
@@ -46,12 +47,14 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.ArachniClientException;
 import de.irissmann.arachni.client.Scan;
 import de.irissmann.arachni.client.request.ScanRequest;
 import de.irissmann.arachni.client.response.ScanResponse;
+import de.irissmann.arachni.client.rest.GsonUtils.MergeConflictStrategy;
 
 /**
  * Implementation that use the Arachni REST interface.
@@ -70,13 +73,12 @@ public class ArachniRestClient implements ArachniClient {
     private final URL baseUrl;
 
     private Gson gson;
+    
+    private final MergeConflictStrategy mergeConflictStrategy;
 
-    ArachniRestClient(URL baseUrl) {
-        this(baseUrl, null);
-    }
-
-    ArachniRestClient(URL baseUrl, UsernamePasswordCredentials credentials) {
+    ArachniRestClient(URL baseUrl, UsernamePasswordCredentials credentials, MergeConflictStrategy mergeConflictStrategy) {
         this.baseUrl = baseUrl;
+        this.mergeConflictStrategy = mergeConflictStrategy;
         gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
         if (credentials == null) {
             httpClient = HttpClientBuilder.create().build();
@@ -91,7 +93,23 @@ public class ArachniRestClient implements ArachniClient {
      * @see de.irissmann.arachni.client.ArachniClient#performScan(de.irissmann.arachni.client.request.ScanRequest)
      */
     public Scan performScan(ScanRequest scanRequest) throws ArachniClientException {
-        String body = gson.toJson(scanRequest);
+        return performScan(scanRequest, null);
+    }
+    
+    /* (non-Javadoc)
+     * @see de.irissmann.arachni.client.ArachniClient#performScan(de.irissmann.arachni.client.request.ScanRequest, java.lang.String)
+     */
+    public Scan performScan(ScanRequest scanRequest, String mergeString) {
+        String body;
+        if (StringUtils.isNotBlank(mergeString)) {
+            JsonParser parser = new JsonParser();
+            JsonObject scan = gson.toJsonTree(scanRequest).getAsJsonObject();
+            JsonObject mergeObject = gson.toJsonTree(parser.parse(mergeString)).getAsJsonObject();
+            GsonUtils.merge(scan, mergeObject, mergeConflictStrategy);
+            body = scan.toString();
+        } else {
+            body = gson.toJson(scanRequest);
+        }
         String json = post(PATH_SCANS, body);
         Map<String, String> response = gson.fromJson(json, Map.class);
         return new ScanRestImpl(response.get("id"), this);
