@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.irissmann</groupId>
   <artifactId>arachni-client</artifactId>
-  <version>1.0.3-SNAPSHOT</version>
+  <version>1.0.3</version>
 
   <name>Arachni Java Client</name>
   <description>A Java client to send request to the Arachni REST API.</description>
