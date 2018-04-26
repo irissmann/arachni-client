@@ -1,0 +1,21 @@
+{
+    "url": "http://ellen:8080",
+    "http": {
+        "user_agent": "ArachniRestClient",
+        "request_timeout": 5000,
+        "request_redirect_limit": 2,
+        "request_concurrency": 33,
+        "request_queue_size": 42,
+        "request_headers": {
+        },
+        "response_max_size": 333222,
+        "cookies": {
+        }
+    },
+    "scope": {
+        "page_limit": 1,
+        "exclude_path_patterns" : [".js|.css"]
+    },
+    "checks": ["*"],
+    "platforms" : ["windows", "linux"]
+}
