@@ -24,9 +24,9 @@ import com.google.gson.JsonObject;
 
 import de.irissmann.arachni.client.ArachniClientException;
 
-class GsonUtils {
+public class ArachniUtils {
 
-    static enum MergeConflictStrategy {
+    public static enum MergeConflictStrategy {
         THROW_EXCEPTION, PREFER_OBJECT, PREFER_STRING, PREFER_NON_NULL;
     }
 

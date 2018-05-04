@@ -23,7 +23,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 
 import de.irissmann.arachni.client.ArachniClient;
 import de.irissmann.arachni.client.ArachniClientException;
-import de.irissmann.arachni.client.rest.GsonUtils.MergeConflictStrategy;
+import de.irissmann.arachni.client.rest.ArachniUtils.MergeConflictStrategy;
 
 /**
  * Builder to get an instance of the {@code ArachniRestClient} implementation. Use the {@code #create(String)}

@@ -53,7 +53,7 @@ import de.irissmann.arachni.client.request.HttpParameters;
 import de.irissmann.arachni.client.request.ScanRequest;
 import de.irissmann.arachni.client.request.Scope;
 import de.irissmann.arachni.client.response.ScanResponse;
-import de.irissmann.arachni.client.rest.GsonUtils.MergeConflictStrategy;
+import de.irissmann.arachni.client.rest.ArachniUtils.MergeConflictStrategy;
 
 public class ArachniRestClientTest extends AbstractRestTest {
 

@@ -54,7 +54,7 @@ import de.irissmann.arachni.client.ArachniClientException;
 import de.irissmann.arachni.client.Scan;
 import de.irissmann.arachni.client.request.ScanRequest;
 import de.irissmann.arachni.client.response.ScanResponse;
-import de.irissmann.arachni.client.rest.GsonUtils.MergeConflictStrategy;
+import de.irissmann.arachni.client.rest.ArachniUtils.MergeConflictStrategy;
 
 /**
  * Implementation that use the Arachni REST interface.
@@ -105,7 +105,7 @@ public class ArachniRestClient implements ArachniClient {
             JsonParser parser = new JsonParser();
             JsonObject scan = gson.toJsonTree(scanRequest).getAsJsonObject();
             JsonObject mergeObject = gson.toJsonTree(parser.parse(mergeString)).getAsJsonObject();
-            GsonUtils.merge(scan, mergeObject, mergeConflictStrategy);
+            ArachniUtils.merge(scan, mergeObject, mergeConflictStrategy);
             body = scan.toString();
         } else {
             body = gson.toJson(scanRequest);
