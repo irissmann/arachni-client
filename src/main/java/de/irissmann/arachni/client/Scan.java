@@ -78,4 +78,20 @@ public abstract class Scan {
      * @throws ArachniClientException
      */
     public abstract void getReportHtml(OutputStream outstream);
+    
+    /**
+     * Retrieve the scan report as XML string. This method can thrown an {@link ArachniClientException} 
+     * 
+     * @return The scan report as XML string.
+     * @throws ArachniClientException
+     */
+    public abstract String getReportXml();
+    
+    /**
+     * Retrieve the scan report as YAML string. This method can thrown an {@link ArachniClientException} 
+     * 
+     * @return The scan report as YAML string.
+     * @throws ArachniClientException
+     */
+    public abstract String getReportYaml();
 }

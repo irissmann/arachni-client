@@ -25,8 +25,12 @@ import com.google.gson.JsonObject;
 import de.irissmann.arachni.client.ArachniClientException;
 
 public class ArachniUtils {
+    
+    private ArachniUtils() {
+        throw new IllegalAccessError("Utility class");
+    }
 
-    public static enum MergeConflictStrategy {
+    public enum MergeConflictStrategy {
         THROW_EXCEPTION, PREFER_OBJECT, PREFER_STRING, PREFER_NON_NULL;
     }
 

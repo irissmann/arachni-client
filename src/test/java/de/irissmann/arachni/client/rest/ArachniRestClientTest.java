@@ -285,6 +285,20 @@ public class ArachniRestClientTest extends AbstractRestTest {
     }
 
     @Test
+    public void testGetReportXml() throws Exception {
+        stubFor(get(urlEqualTo("/scans/30dd87231d9022e97fca7f34b66ece43/report.xml")).willReturn(aResponse()
+                .withStatus(200).withHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString())
+                .withBody(getTextFromFile("responseReport.xml"))));
+
+        ArachniClient arachniClient = ArachniRestClientBuilder.create(getUrl()).build();
+        Scan scan = new ScanRestImpl("30dd87231d9022e97fca7f34b66ece43", (ArachniRestClient) arachniClient);
+
+        String report = scan.getReportXml();
+        
+        assertEquals(getTextFromFile("responseReport.xml"), report);
+    }
+
+    @Test
     public void testGetReportHtml() throws Exception {
         stubFor(get(urlEqualTo("/scans/30dd87231d9022e97fca7f34b66ece43/report.html.zip"))
                 .willReturn(aResponse().withStatus(200).withHeader(HttpHeaders.CONTENT_TYPE, "application/zip")

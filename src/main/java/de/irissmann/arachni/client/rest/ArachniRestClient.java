@@ -66,8 +66,10 @@ public class ArachniRestClient implements ArachniClient {
 
     private static final Logger log = LoggerFactory.getLogger(ArachniRestClient.class);
 
-    public final static String PATH_SCANS = "scans";
+    private static final String COULD_NOT_CONNECT_MSG = "Could not connect to server.";
 
+    public static final String PATH_SCANS = "scans";
+    
     private final CloseableHttpClient httpClient;
 
     private final URL baseUrl;
@@ -92,7 +94,7 @@ public class ArachniRestClient implements ArachniClient {
     /* (non-Javadoc)
      * @see de.irissmann.arachni.client.ArachniClient#performScan(de.irissmann.arachni.client.request.ScanRequest)
      */
-    public Scan performScan(ScanRequest scanRequest) throws ArachniClientException {
+    public Scan performScan(ScanRequest scanRequest) {
         return performScan(scanRequest, null);
     }
     
@@ -138,6 +140,14 @@ public class ArachniRestClient implements ArachniClient {
         return get(String.join("/", PATH_SCANS, id, "report.json"));
     }
     
+    String getScanReportXml(String id) {
+        return get(String.join("/", PATH_SCANS, id, "report.xml"));
+    }
+
+    String getScanReportYaml(String id) {
+        return get(String.join("/", PATH_SCANS, id, "report.yaml"));
+    }
+
     void getScanReportHtml(String id, OutputStream outstream) {
         getBinaryContent(String.join("/", PATH_SCANS, id, "report.html.zip"), outstream);
     }
@@ -148,7 +158,7 @@ public class ArachniRestClient implements ArachniClient {
             HttpResponse response = httpClient.execute(getRequest);
             return EntityUtils.toString(response.getEntity());
         } catch (IOException exception) {
-            throw new ArachniClientException("Could not connect to server.", exception);
+            throw new ArachniClientException(COULD_NOT_CONNECT_MSG, exception);
         } finally {
             getRequest.reset();
         }
@@ -160,7 +170,7 @@ public class ArachniRestClient implements ArachniClient {
             HttpResponse response = httpClient.execute(getRequest);
             response.getEntity().writeTo(outstream);
         } catch (IOException exception) {
-            throw new ArachniClientException("Could not connect to server.", exception);
+            throw new ArachniClientException(COULD_NOT_CONNECT_MSG, exception);
         } finally {
             getRequest.reset();
         }
@@ -181,7 +191,7 @@ public class ArachniRestClient implements ArachniClient {
             }
             return EntityUtils.toString(response.getEntity());
         } catch (IOException exception) {
-            throw new ArachniClientException("Could not connect to server.", exception);
+            throw new ArachniClientException(COULD_NOT_CONNECT_MSG, exception);
         } finally {
             postRequest.reset();
         }
@@ -198,7 +208,7 @@ public class ArachniRestClient implements ArachniClient {
                 throw new ArachniClientException(message);
             }
         } catch (IOException exception) {
-            throw new ArachniClientException("Could not connect to server.", exception);
+            throw new ArachniClientException(COULD_NOT_CONNECT_MSG, exception);
         } finally {
             deleteRequest.reset();
         }

@@ -68,4 +68,19 @@ public class ScanRestImpl extends Scan {
         restClient.getScanReportHtml(getId(), outstream);
     }
 
+    /* (non-Javadoc)
+     * @see de.irissmann.arachni.client.Scan#getReportXml()
+     */
+    @Override
+    public String getReportXml() {
+        return restClient.getScanReportXml(getId());
+    }
+
+    /* (non-Javadoc)
+     * @see de.irissmann.arachni.client.Scan#getReportYaml()
+     */
+    @Override
+    public String getReportYaml() {
+        return restClient.getScanReportYaml(getId());
+    }
 }
